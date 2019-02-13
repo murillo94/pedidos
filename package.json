@@ -5,6 +5,7 @@
   "author": "Murillo de Miranda Pereira",
   "license": "MIT",
   "devDependencies": {
+    "dotenv": "^6.2.0",
     "eslint": "^5.13.0",
     "eslint-config-airbnb": "^17.1.0",
     "eslint-config-prettier": "^4.0.0",
@@ -16,6 +17,7 @@
     "prettier": "^1.16.4"
   },
   "dependencies": {
+    "firebase": "^5.8.2",
     "next": "^8.0.1",
     "react": "^16.8.1",
     "react-dom": "^16.8.1"
