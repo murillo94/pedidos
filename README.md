@@ -44,6 +44,4 @@ Para abrir o projeto no modo produção, usar:
 
 ## url
 
-```
-TODO - adicionar url
-```
+https://teste-mercos-fullstack.now.sh

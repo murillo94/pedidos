@@ -1,0 +1,17 @@
+{
+  "name": "teste-mercos-fullstack",
+  "version": "1.0.0",
+  "description": "Uma aplicação que adiciona pedidos e ​altera os pedidos existentes.",
+  "author": "Murillo de Miranda Pereira",
+  "license": "MIT",
+  "scripts": {
+    "dev": "next",
+    "now-build": "next build && next export -o dist",
+    "deploy": "now && now alias"
+  },
+  "dependencies": {
+    "next": "^8.0.1",
+    "react": "^16.8.1",
+    "react-dom": "^16.8.1"
+  }
+}
