@@ -7,21 +7,24 @@ import List from '../components/List';
 const data = [
   {
     id: 1,
-    name: 'Luke Skywalker',
+    clientId: 3,
+    clientName: 'Luke Skywalker',
     profitability: 'high',
-    total: 10
+    items: []
   },
   {
     id: 2,
-    name: 'Darth Vader',
+    clientId: 1,
+    clientName: 'Darth Vader',
     profitability: 'medium',
-    total: 5
+    items: []
   },
   {
     id: 3,
-    name: 'Obi-Wan Kenobi',
+    clientId: 2,
+    clientName: 'Obi-Wan Kenobi',
     profitability: 'high',
-    total: 30
+    items: []
   }
 ];
 

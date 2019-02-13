@@ -4,7 +4,7 @@ import Button from './Button';
 
 import profitabilityOptions from '../utils/ProfitabilityOptions';
 
-const Item = ({ name, profitability, total }) => (
+const Item = ({ clientName, profitability, items, total = items.length }) => (
   <>
     <div
       className="item"
@@ -12,7 +12,7 @@ const Item = ({ name, profitability, total }) => (
     >
       <div className="info">
         <div>
-          <div className="title">{name}</div>
+          <div className="title">{clientName}</div>
           <div className="subTitle">
             {total !== 1 ? `${total} produtos` : `${total} produto`}
           </div>
@@ -83,8 +83,8 @@ const List = ({ data }) => {
   if (data.length > 0) {
     return (
       <>
-        {data.map(({ id, name, profitability, total }) => (
-          <Item key={id} {...{ id, name, profitability, total }} />
+        {data.map(({ clientId, clientName, profitability, items }) => (
+          <Item key={clientId} {...{ clientName, profitability, items }} />
         ))}
       </>
     );
