@@ -4,12 +4,11 @@ import Button from './Button';
 
 import profitabilityOptions from '../utils/ProfitabilityOptions';
 
-const Item = ({ id, name, profitability, total }) => (
+const Item = ({ name, profitability, total }) => (
   <>
     <div
       className="item"
       style={{ borderColor: profitabilityOptions.border[profitability] }}
-      key={id}
     >
       <div className="info">
         <div>
@@ -71,8 +70,9 @@ const Item = ({ id, name, profitability, total }) => (
           font-size: 13px;
           background-color: #f7d196;
           border-radius: 100px;
+          text-align: center;
           padding: 5px 10px;
-          margin-left: 15px;
+          margin: 0 15px;
         }
       `}
     </style>
@@ -84,7 +84,7 @@ const List = ({ data }) => {
     return (
       <>
         {data.map(({ id, name, profitability, total }) => (
-          <Item {...{ id, name, profitability, total }} />
+          <Item key={id} {...{ id, name, profitability, total }} />
         ))}
       </>
     );
