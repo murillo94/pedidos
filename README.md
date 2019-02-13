@@ -24,7 +24,12 @@ O uso das tecnologias descritas abaixo foram pensadas em uma arquitetura servele
 Antes de tudo, é necessário criar um arquivo `.env` com as suas chaves do [Cloud Firestore](https://firebase.google.com/products/firestore/).
 
 ```
-TODO - adicionar exemplos das chaves
+FIREBASE_API_KEY=<api_key_aqui>
+FIREBASE_AUTH_DOMAIN=<auth_domain_aqui>
+FIREBASE_DATABASE_URL=<databse_url_aqui>
+FIREBASE_PROJECT_ID=<project_id_aqui>
+FIREBASE_STORAGE_BUCKET=<storage_bucket_aqui>
+FIREBASE_MESSAGING_SENDER_ID=<messaging_sender_id_aqui>
 ```
 
 #### Necessário
