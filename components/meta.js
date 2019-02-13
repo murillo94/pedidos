@@ -1,5 +1,7 @@
 import Head from 'next/head';
 
+import { lightGray, black } from '../styles/Colors';
+
 const Meta = () => (
   <>
     <Head>
@@ -16,7 +18,18 @@ const Meta = () => (
           font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto',
             'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans',
             'Helvetica Neue', sans-serif;
-          margin: 0;
+          background-color: ${lightGray};
+          color: ${black};
+          width: 800px;
+          margin: 0 auto;
+          line-height: 1.3;
+          padding: 40px;
+        }
+
+        @media (max-width: 1024px) {
+          body {
+            width: auto;
+          }
         }
       `}
     </style>
