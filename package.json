@@ -4,14 +4,37 @@
   "description": "Uma aplicação que adiciona pedidos e ​altera os pedidos existentes.",
   "author": "Murillo de Miranda Pereira",
   "license": "MIT",
-  "scripts": {
-    "dev": "next",
-    "now-build": "next build && next export -o dist",
-    "deploy": "now && now alias"
+  "devDependencies": {
+    "eslint": "^5.13.0",
+    "eslint-config-airbnb": "^17.1.0",
+    "eslint-config-prettier": "^4.0.0",
+    "eslint-plugin-import": "^2.16.0",
+    "eslint-plugin-jsx-a11y": "^6.2.1",
+    "eslint-plugin-react": "^7.12.4",
+    "husky": "^1.3.1",
+    "lint-staged": "^8.1.3"
   },
   "dependencies": {
     "next": "^8.0.1",
     "react": "^16.8.1",
     "react-dom": "^16.8.1"
+  },
+  "scripts": {
+    "dev": "next",
+    "now-build": "next build && next export -o dist",
+    "deploy": "now && now alias",
+    "lint": "eslint ."
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{js,jsx}": [
+      "eslint --fix",
+      "prettier --write",
+      "git add"
+    ]
   }
 }
