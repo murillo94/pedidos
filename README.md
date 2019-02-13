@@ -21,7 +21,7 @@ O uso das tecnologias descritas abaixo foram pensadas em uma arquitetura servele
 
 ## Usando localmente
 
-Antes de tudo, é necessário criar um arquivo `.env` com as chaves do [Cloud Firestore](https://firebase.google.com/products/firestore/).
+Antes de tudo, é necessário criar um arquivo `.env` com as suas chaves do [Cloud Firestore](https://firebase.google.com/products/firestore/).
 
 ```
 TODO - adicionar exemplos das chaves
@@ -37,10 +37,6 @@ TODO - adicionar exemplos das chaves
 - `git clone git@github.com:murillo94/teste-mercos-fullstack.git`
 - `yarn install`
 - `yarn dev`
-
-Para abrir o projeto no modo produção, usar:
-
-- `yarn prod`
 
 ## url
 
