@@ -4,7 +4,12 @@ import Button from './Button';
 
 import profitabilityOptions from '../utils/ProfitabilityOptions';
 
-const Item = ({ clientName, profitability, items, total = items.length }) => (
+const Item = ({
+  clientName = '',
+  profitability = null,
+  items = {},
+  total = items.length || 0
+}) => (
   <>
     <div
       className="item"
@@ -79,7 +84,7 @@ const Item = ({ clientName, profitability, items, total = items.length }) => (
   </>
 );
 
-const List = ({ data }) => {
+const List = ({ data = [] }) => {
   if (data.length > 0) {
     return (
       <>

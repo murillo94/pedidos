@@ -19,7 +19,7 @@ const initFirebase = () => {
     }
   }
 
-  return firebase;
+  return firebase.firestore();
 };
 
 export default initFirebase;
