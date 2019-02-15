@@ -2,7 +2,6 @@ import { Component } from 'react';
 import Page from '../layouts/Page';
 
 import Header from '../components/Header';
-import Button from '../components/Button';
 import List from '../components/List';
 
 import GetRequests from '../services/GetRequests';
@@ -19,9 +18,7 @@ export default class Requests extends Component {
 
     return (
       <Page>
-        <Header title="Pedidos" subTitle={`${data.length} pedidos no total`}>
-          <Button text="Adicionar" />
-        </Header>
+        <Header title="Pedidos" subTitle={`${data.length} pedidos no total`} />
         <List data={data} />
       </Page>
     );

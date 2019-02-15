@@ -20,7 +20,9 @@
     "firebase": "^5.8.2",
     "next": "^8.0.1",
     "react": "^16.8.1",
-    "react-dom": "^16.8.1"
+    "react-dom": "^16.8.1",
+    "react-focus-lock": "^1.17.7",
+    "react-select": "^2.3.0"
   },
   "scripts": {
     "dev": "next",
