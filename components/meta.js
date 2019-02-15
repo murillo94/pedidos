@@ -1,6 +1,6 @@
 import Head from 'next/head';
 
-import { lightGray, black } from '../styles/Colors';
+import { lightGray, black, blue } from '../styles/Colors';
 
 const Meta = () => (
   <>
@@ -26,6 +26,14 @@ const Meta = () => (
           margin: 0 auto;
           line-height: 1.3;
           padding: 40px;
+        }
+
+        button:focus,
+        input:focus:not(#select-id) {
+          outline: 0 !important;
+          border-color: ${blue} !important;
+          box-shadow: 0 0 0 2px ${blue} !important;
+          transition: box-shadow 0.2s !important;
         }
 
         @media (max-width: 1024px) {
