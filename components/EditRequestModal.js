@@ -24,7 +24,14 @@ const formikEnhancer = withFormik({
     products: Yup.array()
       .of(
         Yup.object().shape({
-          name: Yup.string().required('Obrigatório'),
+          name: Yup.array()
+            .of(
+              Yup.object().shape({
+                label: Yup.string().required(),
+                value: Yup.string().required()
+              })
+            )
+            .required('Obrigatório'),
           quantity: Yup.string().required('Obrigatório'),
           price: Yup.string().required('Obrigatório')
         })

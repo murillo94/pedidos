@@ -58,7 +58,15 @@ const Error = ({ name }) => (
   />
 );
 
-const SelectInput = ({ id, placeholder, value, onChange, onBlur }) => {
+const SelectInput = ({
+  id,
+  placeholder,
+  value,
+  onChange,
+  onBlur,
+  width = '100%',
+  marginRight = '0'
+}) => {
   const handleChange = newValue => {
     onChange(id, [newValue]);
   };
@@ -68,7 +76,7 @@ const SelectInput = ({ id, placeholder, value, onChange, onBlur }) => {
   };
 
   return (
-    <>
+    <div className="container">
       <Select
         id={id}
         inputId="select-id"
@@ -103,7 +111,16 @@ const SelectInput = ({ id, placeholder, value, onChange, onBlur }) => {
         }}
       />
       <Error name={id} />
-    </>
+
+      <style jsx>
+        {`
+          .container {
+            width: ${width};
+            margin-right: ${marginRight};
+          }
+        `}
+      </style>
+    </div>
   );
 };
 
@@ -150,8 +167,6 @@ const EditRequestForm = ({
   values,
   touched,
   errors,
-  /* handleChange,
-  handleBlur, */
   setFieldValue,
   setFieldTouched
 }) => {
@@ -178,11 +193,20 @@ const EditRequestForm = ({
                 {values.products.map((friend, index) => (
                   <div key={index} className="input-group">
                     <Field
-                      type="text"
-                      placeholder="Descrição"
+                      placeholder="Selecione um produto"
                       name={`products[${index}].name`}
+                      id={`products[${index}].name`}
+                      value={form.values.products[index].value}
+                      error={
+                        typeof form.errors.products === 'object' &&
+                        form.errors.products[index]
+                      }
+                      touched={form.touched.products}
+                      onChange={setFieldValue}
+                      onBlur={setFieldTouched}
                       width="60%"
-                      component={Input}
+                      marginRight="10px"
+                      component={SelectInput}
                     />
                     <Field
                       type="text"
@@ -207,7 +231,13 @@ const EditRequestForm = ({
                 ))}
                 <Button
                   text="Adicionar produto"
-                  onClick={() => push({ name: [], quantity: '', price: '' })}
+                  onClick={() =>
+                    push({
+                      name: [],
+                      quantity: '',
+                      price: ''
+                    })
+                  }
                 />
                 {form.errors && typeof form.errors.products === 'string' && (
                   <Error name="products" />
