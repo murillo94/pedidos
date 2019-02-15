@@ -26,13 +26,7 @@ const Item = ({
             {total !== 1 ? `${total} produtos` : `${total} produto`}
           </div>
         </div>
-        <div
-          className="profitability"
-          style={{
-            color: profitabilityOptions.border[profitability],
-            backgroundColor: profitabilityOptions.backgroundColor[profitability]
-          }}
-        >
+        <div className="profitability">
           {profitabilityOptions.text[profitability]}
         </div>
       </div>
@@ -83,7 +77,10 @@ const Item = ({
 
         .profitability {
           font-size: 13px;
-          background-color: #f7d196;
+          color: ${profitabilityOptions.border[profitability]};
+          background-color: ${profitabilityOptions.backgroundColor[
+            profitability
+          ]};
           border-radius: 100px;
           text-align: center;
           padding: 5px 10px;
