@@ -1,5 +1,6 @@
 /* eslint-disable jsx-a11y/label-has-for */
 import Select from 'react-select';
+import { FieldArray, Field } from 'formik';
 
 import { gray, white, black, darkGray, red } from '../styles/Colors';
 
@@ -49,19 +50,28 @@ const Error = ({ message }) => (
   </div>
 );
 
-const SelectInput = ({ id, value, error, touched, onChange, onBlur }) => {
+const SelectInput = ({
+  id,
+  placeholder,
+  value,
+  error,
+  touched,
+  onChange,
+  onBlur
+}) => {
   const handleChange = newValue => {
-    onChange('customer', [newValue]);
+    onChange(id, [newValue]);
   };
 
   const handleBlur = () => {
-    onBlur('customer', true);
+    onBlur(id, true);
   };
 
   return (
     <>
       <Select
         id={id}
+        placeholder={placeholder}
         options={options}
         onChange={handleChange}
         onBlur={handleBlur}
@@ -108,11 +118,43 @@ const EditRequestForm = ({
       <Label text="Cliente" id="customer">
         <SelectInput
           id="customer"
+          placeholder="Selecione um cliente"
           value={values.customer}
           error={errors.customer}
           touched={touched.customer}
           onChange={setFieldValue}
           onBlur={setFieldTouched}
+        />
+      </Label>
+
+      <Label text="Produtos" id="products">
+        <FieldArray
+          name="products"
+          render={arrayHelpers => (
+            <div>
+              {values.products.map((friend, index) => (
+                <div key={index}>
+                  <Field name={`products[${index}].name`} />
+                  <Field name={`products[${index}].quantity`} />
+                  <Field name={`products.${index}.price`} />
+                  <button
+                    type="button"
+                    onClick={() => arrayHelpers.remove(index)}
+                  >
+                    -
+                  </button>
+                </div>
+              ))}
+              <button
+                type="button"
+                onClick={() =>
+                  arrayHelpers.push({ name: [], quantity: 0, price: 0 })
+                }
+              >
+                Adicionar produto
+              </button>
+            </div>
+          )}
         />
       </Label>
 

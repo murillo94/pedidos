@@ -13,16 +13,33 @@ import { white, gray, lightGray, green } from '../styles/Colors';
 const formikEnhancer = withFormik({
   validationSchema: Yup.object().shape({
     customer: Yup.array()
-      .min(1, 'Informe um cliente')
+      .required('Informe um cliente')
       .of(
         Yup.object().shape({
           label: Yup.string().required(),
           value: Yup.string().required()
         })
+      ),
+    products: Yup.array()
+      .of(
+        Yup.object().shape({
+          name: Yup.array()
+            .required('Obrigatório')
+            .of(
+              Yup.object().shape({
+                label: Yup.string().required(),
+                value: Yup.string().required()
+              })
+            ),
+          quantity: Yup.number().required('Obrigatório'),
+          price: Yup.number().required('Obrigatório')
+        })
       )
+      .required('Informe um produto')
   }),
   mapPropsToValues: () => ({
-    customer: []
+    customer: [],
+    products: []
   }),
   handleSubmit: (values, { props, setSubmitting }) => {
     setSubmitting(false);
