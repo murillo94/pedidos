@@ -1,14 +1,18 @@
-import { gray } from '../styles/Colors';
+import { white, gray, blue } from '../styles/Colors';
 
 const Button = ({
+  type = 'button',
   text = '',
   fontSize = 14,
   fontColor = 'inherit',
-  border = `1px solid ${gray}`,
-  onClick
+  backgroundColor = white,
+  borderColor = gray,
+  marginLeft = 0,
+  onClick,
+  refs = null
 }) => (
   <>
-    <button type="submit" onClick={onClick}>
+    <button type={type} onClick={onClick} ref={refs}>
       {text}
     </button>
 
@@ -18,11 +22,19 @@ const Button = ({
           font-size: ${fontSize}px;
           font-weight: 500;
           color: ${fontColor};
-          border: ${border};
+          background-color: ${backgroundColor};
+          border: 1px solid ${borderColor};
           box-shadow: none;
           border-radius: 4px;
           padding: 10px 20px;
+          margin-left: ${marginLeft}px;
           cursor: pointer;
+        }
+
+        button:focus {
+          outline: 0;
+          border-color: ${blue};
+          box-shadow: 0 0 0 2px ${blue};
         }
       `}
     </style>

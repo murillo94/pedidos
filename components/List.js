@@ -1,6 +1,9 @@
+import { useState } from 'react';
+
 import { white, darkGray } from '../styles/Colors';
 
 import Button from './Button';
+import EditRequestModal from './EditRequestModal';
 
 import profitabilityOptions from '../utils/ProfitabilityOptions';
 
@@ -8,7 +11,8 @@ const Item = ({
   clientName = '',
   profitability = null,
   items = {},
-  total = items.length || 0
+  total = items.length || 0,
+  handleModal
 }) => (
   <>
     <div
@@ -32,7 +36,13 @@ const Item = ({
           {profitabilityOptions.text[profitability]}
         </div>
       </div>
-      <Button text="Editar" fontSize={13} fontColor={darkGray} border="none" />
+      <Button
+        text="Editar"
+        fontSize={13}
+        fontColor={darkGray}
+        borderColor="transparent"
+        onClick={handleModal}
+      />
     </div>
 
     <style jsx>
@@ -85,12 +95,27 @@ const Item = ({
 );
 
 const List = ({ data = [] }) => {
+  const [isOpen, setOpen] = useState(false);
+
+  const handleModal = () => {
+    setOpen(!isOpen);
+  };
+
   if (data.length > 0) {
     return (
       <>
         {data.map(({ clientId, clientName, profitability, items }) => (
-          <Item key={clientId} {...{ clientName, profitability, items }} />
+          <Item
+            key={clientId}
+            {...{ clientName, profitability, items, handleModal }}
+          />
         ))}
+        {isOpen && (
+          <EditRequestModal
+            title="Editar pedido"
+            onRequestClose={handleModal}
+          />
+        )}
       </>
     );
   }
