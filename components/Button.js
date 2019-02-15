@@ -1,4 +1,4 @@
-import { white, gray, blue } from '../styles/Colors';
+import { white, gray } from '../styles/Colors';
 
 const Button = ({
   type = 'button',
@@ -30,12 +30,6 @@ const Button = ({
           padding: 10px 20px;
           margin-left: ${marginLeft}px;
           cursor: pointer;
-        }
-
-        button:focus {
-          outline: 0;
-          border-color: ${blue};
-          box-shadow: 0 0 0 2px ${blue};
         }
 
         button:disabled {
