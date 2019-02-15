@@ -20,6 +20,7 @@
     "react/jsx-indent": ["error", 2],
     "react/destructuring-assignment": 0,
     "react/react-in-jsx-scope": 0,
+    "react/button-has-type": 0,
     "import/no-extraneous-dependencies": [0],
     "import/extensions": ["error", { "js": "never", "json": "always" }],
     "no-undef": 0,
