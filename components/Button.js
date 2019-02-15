@@ -2,6 +2,7 @@ import { white, gray, blue } from '../styles/Colors';
 
 const Button = ({
   type = 'button',
+  disabled = false,
   text = '',
   fontSize = 14,
   fontColor = 'inherit',
@@ -12,7 +13,7 @@ const Button = ({
   refs = null
 }) => (
   <>
-    <button type={type} onClick={onClick} ref={refs}>
+    <button type={type} disabled={disabled} onClick={onClick} ref={refs}>
       {text}
     </button>
 
@@ -35,6 +36,10 @@ const Button = ({
           outline: 0;
           border-color: ${blue};
           box-shadow: 0 0 0 2px ${blue};
+        }
+
+        button:disabled {
+          cursor: not-allowed;
         }
       `}
     </style>
