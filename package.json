@@ -18,11 +18,13 @@
   },
   "dependencies": {
     "firebase": "^5.8.2",
+    "formik": "^1.5.0",
     "next": "^8.0.1",
     "react": "^16.8.1",
     "react-dom": "^16.8.1",
     "react-focus-lock": "^1.17.7",
-    "react-select": "^2.3.0"
+    "react-select": "^2.3.0",
+    "yup": "^0.26.10"
   },
   "scripts": {
     "dev": "next",

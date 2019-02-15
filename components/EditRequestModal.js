@@ -1,6 +1,8 @@
 import { useRef, useLayoutEffect } from 'react';
 import ReactDOM from 'react-dom';
 
+import { withFormik } from 'formik';
+import * as Yup from 'yup';
 import FocusLock from 'react-focus-lock';
 
 import EditRequestForm from './EditRequestForm';
@@ -8,52 +10,103 @@ import Button from './Button';
 
 import { white, gray, lightGray, green } from '../styles/Colors';
 
-const Modal = ({ title, children }) => (
-  <form
-    className="backdrop"
-    tabIndex="-1"
-    role="dialog"
-    aria-label={title}
-    aria-modal="true"
-  >
-    <div className="container">{children}</div>
+const formikEnhancer = withFormik({
+  validationSchema: Yup.object().shape({
+    customer: Yup.array()
+      .min(1, 'Informe um cliente')
+      .of(
+        Yup.object().shape({
+          label: Yup.string().required(),
+          value: Yup.string().required()
+        })
+      )
+  }),
+  mapPropsToValues: () => ({
+    customer: []
+  }),
+  handleSubmit: (values, { props, setSubmitting }) => {
+    setSubmitting(false);
+    props.onRequestClose();
+  },
+  displayName: 'Modal'
+});
 
-    <style jsx>
-      {`
-        .backdrop {
-          position: fixed;
-          top: 0;
-          bottom: 0;
-          right: 0;
-          left: 0;
-          background-color: rgba(15, 43, 73, 0.25);
-          display: grid;
-          justify-content: center;
-          align-items: center;
-          overflow: auto;
-        }
+const Modal = props => {
+  const {
+    title,
+    onRequestClose,
+    values,
+    touched,
+    errors,
+    handleChange,
+    handleBlur,
+    handleSubmit,
+    setFieldValue,
+    setFieldTouched,
+    isSubmitting
+  } = props;
 
-        .container {
-          position: relative;
-          background-color: ${white};
-          border-radius: 4px;
-          min-height: 550px;
-          width: 600px;
-          display: flex;
-          flex-direction: column;
-          flex-wrap: nowrap;
-          overflow: hidden;
-        }
-
-        @media (max-width: 1024px) {
-          .container {
-            width: 100%;
+  return (
+    <form
+      onSubmit={handleSubmit}
+      className="backdrop"
+      tabIndex="-1"
+      role="dialog"
+      aria-label={title}
+      aria-modal="true"
+    >
+      <div className="container">
+        <Header title={title} />
+        <EditRequestForm
+          {...{
+            values,
+            touched,
+            errors,
+            handleChange,
+            handleBlur,
+            setFieldValue,
+            setFieldTouched
+          }}
+        />
+        <Footer {...{ onRequestClose, isSubmitting }} />
+      </div>
+      <style jsx>
+        {`
+          .backdrop {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            right: 0;
+            left: 0;
+            background-color: rgba(15, 43, 73, 0.25);
+            display: grid;
+            justify-content: center;
+            align-items: center;
+            overflow: auto;
           }
-        }
-      `}
-    </style>
-  </form>
-);
+
+          .container {
+            position: relative;
+            background-color: ${white};
+            border-radius: 4px;
+            min-height: 550px;
+            width: 600px;
+            display: flex;
+            flex-direction: column;
+            flex-wrap: nowrap;
+            overflow: hidden;
+          }
+
+          @media (max-width: 1024px) {
+            .container {
+              width: 100%;
+            }
+          }
+        `}
+      </style>
+    </form>
+  );
+};
 
 const Header = ({ title }) => (
   <header>
@@ -76,7 +129,7 @@ const Header = ({ title }) => (
   </header>
 );
 
-const Footer = ({ onRequestClose }) => {
+const Footer = ({ onRequestClose, isSubmitting }) => {
   const modalRef = useRef();
 
   useLayoutEffect(() => {
@@ -95,6 +148,7 @@ const Footer = ({ onRequestClose }) => {
         fontColor={white}
         backgroundColor={green}
         marginLeft={10}
+        disabled={isSubmitting}
       />
 
       <style jsx>
@@ -113,6 +167,8 @@ const Footer = ({ onRequestClose }) => {
   );
 };
 
+const ModalForm = formikEnhancer(Modal);
+
 const EditRequestModal = ({ title, onRequestClose }) => {
   const escModal = event => {
     if (event.keyCode === 27) onRequestClose();
@@ -127,11 +183,7 @@ const EditRequestModal = ({ title, onRequestClose }) => {
 
   return ReactDOM.createPortal(
     <FocusLock>
-      <Modal title={title} onRequestClose={onRequestClose}>
-        <Header title={title} />
-        <EditRequestForm />
-        <Footer onRequestClose={onRequestClose} />
-      </Modal>
+      <ModalForm title={title} onRequestClose={onRequestClose} />
     </FocusLock>,
     document.body
   );
