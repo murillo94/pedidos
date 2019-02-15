@@ -1,9 +1,10 @@
 export const white = '#fff';
 export const black = '#3a3a3a';
-export const gray = '#f3f3f6';
+export const gray = '#ececee';
 export const lightGray = '#fafbfc';
 export const darkGray = '#80899b';
 export const green = '#43a074';
 export const lightGreen = '#8ec6ab';
 export const yellow = '#f2b350';
 export const lightYellow = '#f7d196';
+export const blue = '#2684FF';
