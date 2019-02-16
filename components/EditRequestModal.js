@@ -1,6 +1,7 @@
 import { useRef, useLayoutEffect } from 'react';
 import ReactDOM from 'react-dom';
 
+import isCurrency from 'validator/lib/isCurrency';
 import { withFormik } from 'formik';
 import * as Yup from 'yup';
 import FocusLock from 'react-focus-lock';
@@ -12,32 +13,70 @@ import profitabilityOptions from '../utils/ProfitabilityOptions';
 import { white, gray, lightGray, green } from '../styles/Colors';
 
 const formikEnhancer = withFormik({
-  validationSchema: Yup.object().shape({
-    customer: Yup.array()
-      .of(
-        Yup.object().shape({
-          label: Yup.string().required(),
-          value: Yup.string().required()
-        })
-      )
-      .required('Informe um cliente'),
-    products: Yup.array()
-      .of(
-        Yup.object().shape({
-          name: Yup.array()
-            .of(
-              Yup.object().shape({
-                label: Yup.string().required(),
-                value: Yup.string().required()
+  validationSchema: () =>
+    Yup.object().shape({
+      customer: Yup.array()
+        .of(
+          Yup.object().shape({
+            label: Yup.string().required(),
+            value: Yup.string().required()
+          })
+        )
+        .required('Informe um cliente'),
+      products: Yup.array()
+        .of(
+          Yup.object().shape({
+            name: Yup.array()
+              .of(
+                Yup.object().shape({
+                  label: Yup.string().required(),
+                  value: Yup.string().required()
+                })
+              )
+              .required('Obrigatório'),
+            quantity: Yup.number()
+              .transform(value => (isNaN(value) ? undefined : value))
+              .integer('Necessário ser inteiro')
+              .min(1, 'Necessário ser maior ou igual a 1')
+              .required('Obrigatório'),
+            price: Yup.string()
+              .test('price', 'Necessário ter 2 casas decimais', value => {
+                const money = value || 0;
+
+                const teste = isCurrency(
+                  money.toString().replace(/R\$ /g, ''),
+                  {
+                    symbol: '$',
+                    require_symbol: false,
+                    allow_space_after_symbol: false,
+                    symbol_after_digits: false,
+                    allow_negatives: false,
+                    parens_for_negatives: false,
+                    negative_sign_before_digits: false,
+                    negative_sign_after_digits: false,
+                    allow_negative_sign_placeholder: false,
+                    thousands_separator: '.',
+                    decimal_separator: ',',
+                    allow_decimal: true,
+                    require_decimal: true,
+                    digits_after_decimal: [2],
+                    allow_space_after_digits: false
+                  }
+                );
+
+                return teste;
               })
-            )
-            .required('Obrigatório'),
-          quantity: Yup.string().required('Obrigatório'),
-          price: Yup.string().required('Obrigatório')
-        })
-      )
-      .required('Informe um produto')
-  }),
+              .test(
+                'moreThan',
+                'Necessário ser maior que 0',
+                value =>
+                  parseFloat(value.replace(/R\$ /g, '').replace(/,/g, '.')) > 0
+              )
+              .required('Obrigatório')
+          })
+        )
+        .required('Informe um produto')
+    }),
   mapPropsToValues: ({ customer, products }) => ({
     customer: customer || [],
     products: products || []

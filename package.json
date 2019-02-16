@@ -23,7 +23,9 @@
     "react": "^16.8.1",
     "react-dom": "^16.8.1",
     "react-focus-lock": "^1.17.7",
+    "react-number-format": "^4.0.6",
     "react-select": "^2.3.0",
+    "validator": "^10.11.0",
     "yup": "^0.26.10"
   },
   "scripts": {

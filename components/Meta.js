@@ -1,6 +1,6 @@
 import Head from 'next/head';
 
-import { lightGray, black, blue } from '../styles/Colors';
+import { lightGray, black, blue, gray, darkGray } from '../styles/Colors';
 
 const Meta = () => (
   <>
@@ -34,6 +34,36 @@ const Meta = () => (
           border-color: ${blue} !important;
           box-shadow: 0 0 0 2px ${blue} !important;
           transition: box-shadow 0.2s !important;
+        }
+
+        input:not(#select-id) {
+          font-size: 15px;
+          color: ${black};
+          height: 38px;
+          width: 100%;
+          border: 1px solid ${gray};
+          border-radius: 4px;
+          padding: 9px;
+          box-sizing: border-box;
+          transition: all 0.2s;
+        }
+
+        input:hover:not(#select-id) {
+          border: 1px solid ${darkGray};
+        }
+
+        input[type='number']::-webkit-outer-spin-button,
+        input[type='number']::-webkit-inner-spin-button {
+          -webkit-appearance: none;
+          margin: 0;
+        }
+
+        input[type='number'] {
+          -moz-appearance: textfield;
+        }
+
+        ::placeholder {
+          color: ${darkGray};
         }
 
         @media (max-width: 1024px) {

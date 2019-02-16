@@ -1,6 +1,8 @@
 /* eslint-disable jsx-a11y/label-has-for */
-import Select from 'react-select';
+
 import { FieldArray, Field, ErrorMessage } from 'formik';
+import Select from 'react-select';
+import NumberFormat from 'react-number-format';
 
 import Button from './Button';
 
@@ -14,6 +16,10 @@ const options = [
   { value: 'Unicorns', label: 'Unicorns' },
   { value: 'Kittens', label: 'Kittens' }
 ];
+
+const validateQuantity = (value, multiple) => {
+  return value % multiple !== 0 && `Qtd. mult. de ${multiple}`;
+};
 
 const Label = ({ text, id, children }) => (
   <div>
@@ -127,7 +133,20 @@ const SelectInput = ({
 const Input = ({ field, ...props }) => {
   return (
     <div>
-      <input {...field} {...props} />
+      {props.mask ? (
+        <NumberFormat
+          {...field}
+          {...props}
+          prefix="R$ "
+          thousandSeparator="."
+          decimalSeparator=","
+          decimalScale={2}
+          allowNegative={false}
+          autoComplete="off"
+        />
+      ) : (
+        <input {...field} {...props} autoComplete="off" />
+      )}
 
       <Error name={field.name} />
 
@@ -136,26 +155,6 @@ const Input = ({ field, ...props }) => {
           div {
             margin-right: 10px;
             width: ${props.width};
-          }
-
-          input {
-            font-size: 15px;
-            color: ${black};
-            height: 38px;
-            width: 100%;
-            border: 1px solid ${gray};
-            border-radius: 4px;
-            padding: 9px;
-            box-sizing: border-box;
-            transition: all 0.2s;
-          }
-
-          input:hover {
-            border: 1px solid ${darkGray};
-          }
-
-          ::placeholder {
-            color: ${darkGray};
           }
         `}
       </style>
@@ -209,10 +208,22 @@ const EditRequestForm = ({
                       component={SelectInput}
                     />
                     <Field
+                      validate={value =>
+                        validateQuantity(
+                          value,
+                          form.values.products[index].multiple
+                        )
+                      }
                       type="text"
                       placeholder="Qtd."
                       name={`products[${index}].quantity`}
                       width="15%"
+                      onChange={e => {
+                        form.setFieldValue(
+                          `products[${index}].quantity`,
+                          e.target.value.replace(/[^\d]/g, '')
+                        );
+                      }}
                       component={Input}
                     />
                     <Field
@@ -220,6 +231,7 @@ const EditRequestForm = ({
                       placeholder="Preço Unit."
                       name={`products.${index}.price`}
                       width="25%"
+                      mask=" "
                       component={Input}
                     />
                     <Button
@@ -235,7 +247,8 @@ const EditRequestForm = ({
                     push({
                       name: [],
                       quantity: '',
-                      price: ''
+                      price: '',
+                      multiple: 2
                     })
                   }
                 />
