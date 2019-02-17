@@ -1,15 +1,16 @@
-import { useRef, useLayoutEffect } from 'react';
+import { useRef, useLayoutEffect, memo } from 'react';
 import ReactDOM from 'react-dom';
 
 import isCurrency from 'validator/lib/isCurrency';
+import Dinero from 'dinero.js';
 import { withFormik } from 'formik';
 import * as Yup from 'yup';
 import FocusLock from 'react-focus-lock';
 
 import EditRequestForm from './EditRequestForm';
+import Profitability from './Profitability';
 import Button from './Button';
 
-import profitabilityOptions from '../utils/ProfitabilityOptions';
 import { white, gray, lightGray, green } from '../styles/Colors';
 
 const formikEnhancer = withFormik({
@@ -100,7 +101,8 @@ const Modal = props => {
     handleSubmit,
     setFieldValue,
     setFieldTouched,
-    isSubmitting
+    isSubmitting,
+    isValid
   } = props;
 
   return (
@@ -125,7 +127,7 @@ const Modal = props => {
             setFieldTouched
           }}
         />
-        <Footer {...{ onRequestClose, isSubmitting }} />
+        <Footer {...{ onRequestClose, values, isSubmitting, isValid }} />
       </div>
 
       <style jsx>
@@ -153,7 +155,7 @@ const Modal = props => {
             background-color: ${white};
             border-radius: 4px;
             min-height: 0;
-            height: 550px;
+            height: 580px;
             width: 680px;
             display: flex;
             flex-direction: column;
@@ -202,76 +204,104 @@ const Header = ({ title }) => (
   </header>
 );
 
-const Footer = ({ onRequestClose, isSubmitting }) => {
-  const modalRef = useRef();
+const Footer = memo(
+  // eslint-disable-next-line no-unused-vars
+  ({ onRequestClose, values, isSubmitting, isValid }) => {
+    const modalRef = useRef();
 
-  useLayoutEffect(() => {
-    modalRef.current.focus();
-    return () => {
-      modalRef.current.blur();
-    };
-  }, []);
+    const quantityTotal = values.products.reduce(
+      (sum, { quantity }) => sum + Number(quantity),
+      0
+    );
 
-  return (
-    <footer>
-      <div>
-        <div className="info">
-          Quantidade total:
-          <span>2</span>
+    const priceTotal = values.products.reduce(
+      (sum, { price }) => sum + Number(price.replace(/[^\d]/g, '')),
+      0
+    );
+
+    const formatPriceTotal = Dinero({ amount: priceTotal })
+      .toFormat('0,0.00')
+      .replace(/,/g, '.')
+      .replace(/.([^.]*)$/, ',$1');
+
+    const profitabilityType = values.products.length
+      ? [...new Set(values.products.map(({ profitability }) => profitability))]
+      : 'medium';
+
+    const formatProfitabilityType = profitabilityType.includes('low')
+      ? 'low'
+      : profitabilityType.includes('medium')
+      ? 'medium'
+      : 'high';
+
+    useLayoutEffect(() => {
+      modalRef.current.focus();
+      return () => {
+        modalRef.current.blur();
+      };
+    }, []);
+
+    return (
+      <footer>
+        <div>
+          <div className="info">
+            Quantidade total:
+            <span>{quantityTotal}</span>
+          </div>
+          <div className="info">
+            Total:
+            {/* eslint-disable-next-line react/jsx-one-expression-per-line */}
+            <span>R$ {formatPriceTotal}</span>
+            <Profitability
+              value={formatProfitabilityType}
+              style={{ marginLeft: 5, fontWeight: 500 }}
+            />
+          </div>
         </div>
-        <div className="info">
-          Total:
-          <span>R$ 4,42</span>
-          <span className="profitability">$</span>
+        <div>
+          <Button text="Cancelar" refs={modalRef} onClick={onRequestClose} />
+          <Button
+            type="submit"
+            text="Salvar"
+            fontColor={white}
+            backgroundColor={green}
+            marginLeft={10}
+            disabled={isSubmitting}
+          />
         </div>
-      </div>
-      <div>
-        <Button text="Cancelar" onClick={onRequestClose} refs={modalRef} />
-        <Button
-          type="submit"
-          text="Salvar"
-          fontColor={white}
-          backgroundColor={green}
-          marginLeft={10}
-          disabled={isSubmitting}
-        />
-      </div>
 
-      <style jsx>
-        {`
-          footer {
-            padding: 20px 15px;
-            background-color: ${lightGray};
-            border: 1px solid ${gray};
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-          }
-          .info {
-            font-size: 15px;
-          }
+        <style jsx>
+          {`
+            footer {
+              padding: 20px 15px;
+              background-color: ${lightGray};
+              border: 1px solid ${gray};
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+            }
 
-          .info:not(:last-child) {
-            margin-bottom: 5px;
-          }
+            .info {
+              font-size: 15px;
+            }
 
-          span {
-            margin-left: 5px;
-            font-weight: 500;
-          }
+            .info:not(:last-child) {
+              margin-bottom: 5px;
+            }
 
-          .profitability {
-            font-size: 13px;
-            color: ${profitabilityOptions.border.high};
-            background-color: ${profitabilityOptions.backgroundColor.high};
-            border-radius: 100px;
-            padding: 1px 5px;
-          }
-        `}
-      </style>
-    </footer>
-  );
-};
+            span {
+              margin-left: 5px;
+              font-weight: 500;
+            }
+          `}
+        </style>
+      </footer>
+    );
+  },
+  (prevProps, newProps) => {
+    return !newProps.isValid;
+  }
+);
 
 const ModalForm = formikEnhancer(Modal);
 

@@ -17,6 +17,8 @@
     "prettier": "^1.16.4"
   },
   "dependencies": {
+    "add": "^2.0.6",
+    "dinero.js": "^1.5.0",
     "firebase": "^5.8.2",
     "formik": "^1.5.0",
     "next": "^8.0.1",
@@ -26,6 +28,7 @@
     "react-number-format": "^4.0.6",
     "react-select": "^2.3.0",
     "validator": "^10.11.0",
+    "yarn": "^1.13.0",
     "yup": "^0.26.10"
   },
   "scripts": {

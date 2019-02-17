@@ -1,11 +1,13 @@
 /* eslint-disable jsx-a11y/label-has-for */
 
-import { FieldArray, Field, ErrorMessage } from 'formik';
+import { FieldArray, FastField, ErrorMessage } from 'formik';
 import Select from 'react-select';
 import NumberFormat from 'react-number-format';
 
+import Profitability from './Profitability';
 import Button from './Button';
 
+import { profitabilityType } from '../utils/ProfitabilityOptions';
 import { gray, white, black, darkGray, red, blue } from '../styles/Colors';
 
 const options = [
@@ -133,7 +135,7 @@ const SelectInput = ({
 const Input = ({ field, ...props }) => {
   return (
     <div>
-      {props.mask ? (
+      {props.money ? (
         <NumberFormat
           {...field}
           {...props}
@@ -191,10 +193,19 @@ const EditRequestForm = ({
               <div>
                 {values.products.map((friend, index) => (
                   <div key={index} className="input-group">
-                    <Field
-                      placeholder="Selecione um produto"
+                    <FastField
+                      name={`products[${index}].profitability`}
+                      render={({ field }) => (
+                        <Profitability
+                          {...field}
+                          style={{ marginRight: 10, fontWeight: 500 }}
+                        />
+                      )}
+                    />
+                    <FastField
                       name={`products[${index}].name`}
                       id={`products[${index}].name`}
+                      placeholder="Selecione um produto"
                       value={form.values.products[index].value}
                       error={
                         typeof form.errors.products === 'object' &&
@@ -207,17 +218,17 @@ const EditRequestForm = ({
                       marginRight="10px"
                       component={SelectInput}
                     />
-                    <Field
+                    <FastField
+                      type="text"
+                      name={`products[${index}].quantity`}
+                      placeholder="Qtd."
+                      width="15%"
                       validate={value =>
                         validateQuantity(
                           value,
                           form.values.products[index].multiple
                         )
                       }
-                      type="text"
-                      placeholder="Qtd."
-                      name={`products[${index}].quantity`}
-                      width="15%"
                       onChange={e => {
                         form.setFieldValue(
                           `products[${index}].quantity`,
@@ -226,18 +237,31 @@ const EditRequestForm = ({
                       }}
                       component={Input}
                     />
-                    <Field
+                    <FastField
                       type="text"
-                      placeholder="Preço Unit."
                       name={`products.${index}.price`}
+                      placeholder="Preço Unit."
                       width="25%"
-                      mask=" "
+                      money="true"
+                      onChange={e => {
+                        form.setFieldValue(
+                          `products[${index}].price`,
+                          e.target.value
+                        );
+                        form.setFieldValue(
+                          `products[${index}].profitability`,
+                          profitabilityType(
+                            form.values.products[index].priceFixed,
+                            e.target.value
+                          )
+                        );
+                      }}
                       component={Input}
                     />
                     <Button
                       text="x"
-                      onClick={() => remove(index)}
                       fontColor={darkGray}
+                      onClick={() => remove(index)}
                     />
                   </div>
                 ))}
@@ -247,8 +271,10 @@ const EditRequestForm = ({
                     push({
                       name: [],
                       quantity: '',
-                      price: '',
-                      multiple: 2
+                      priceFixed: '100,00',
+                      price: '100,00',
+                      multiple: 2,
+                      profitability: 'medium'
                     })
                   }
                 />
@@ -274,7 +300,7 @@ const EditRequestForm = ({
 
           .input-group {
             display: flex;
-            align-items: flex-start;
+            align-items: baseline;
             margin-bottom: 15px;
           }
         `}
