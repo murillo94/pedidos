@@ -2,10 +2,11 @@ import { useState } from 'react';
 
 import { white, darkGray } from '../styles/Colors';
 
+import Profitability from './Profitability';
 import Button from './Button';
 import EditRequestModal from './EditRequestModal';
 
-import profitabilityOptions from '../utils/ProfitabilityOptions';
+import { profitabilityOptions } from '../utils/ProfitabilityOptions';
 
 const Item = ({
   clientName = '',
@@ -26,9 +27,11 @@ const Item = ({
             {total !== 1 ? `${total} produtos` : `${total} produto`}
           </div>
         </div>
-        <div className="profitability">
-          {profitabilityOptions.text[profitability]}
-        </div>
+        <Profitability
+          value={profitability}
+          message={profitabilityOptions.text[profitability]}
+          style={{ padding: '4px 10px', margin: '0 15px' }}
+        />
       </div>
       <Button
         text="Editar"
@@ -73,18 +76,6 @@ const Item = ({
           font-size: 13px;
           color: ${darkGray};
           margin: 0;
-        }
-
-        .profitability {
-          font-size: 13px;
-          color: ${profitabilityOptions.border[profitability]};
-          background-color: ${profitabilityOptions.backgroundColor[
-            profitability
-          ]};
-          border-radius: 100px;
-          text-align: center;
-          padding: 5px 10px;
-          margin: 0 15px;
         }
       `}
     </style>
