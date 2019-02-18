@@ -45,24 +45,26 @@ const Label = ({ text, id, children }) => (
   </div>
 );
 
+const ErrorContainer = ({ message }) => (
+  <div>
+    {message}
+
+    <style jsx>
+      {`
+        div {
+          font-size: 14px;
+          color: ${red};
+          margin-top: 7px;
+        }
+      `}
+    </style>
+  </div>
+);
+
 const Error = ({ name }) => (
   <ErrorMessage
     name={name}
-    render={msg => (
-      <div>
-        {msg}
-
-        <style jsx>
-          {`
-            div {
-              font-size: 14px;
-              color: ${red};
-              margin-top: 7px;
-            }
-          `}
-        </style>
-      </div>
-    )}
+    render={message => <ErrorContainer message={message} />}
   />
 );
 
@@ -136,16 +138,23 @@ const Input = ({ field, ...props }) => {
   return (
     <div>
       {props.money ? (
-        <NumberFormat
-          {...field}
-          {...props}
-          prefix="R$ "
-          thousandSeparator="."
-          decimalSeparator=","
-          decimalScale={2}
-          allowNegative={false}
-          autoComplete="off"
-        />
+        <>
+          <NumberFormat
+            {...field}
+            {...props}
+            prefix="R$ "
+            thousandSeparator="."
+            decimalSeparator=","
+            decimalScale={2}
+            allowNegative={false}
+            autoComplete="off"
+          />
+          {props.form.errors.products &&
+          props.form.errors.products[props.id].profitability &&
+          !props.form.errors.products[props.id].price ? (
+            <ErrorContainer message="Rentabilidade ruim" />
+          ) : null}
+        </>
       ) : (
         <input {...field} {...props} autoComplete="off" />
       )}
@@ -241,6 +250,7 @@ const EditRequestForm = ({
                       type="text"
                       name={`products.${index}.price`}
                       placeholder="Preço Unit."
+                      id={index.toString()}
                       width="25%"
                       money="true"
                       onChange={e => {

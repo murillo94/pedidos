@@ -27,6 +27,9 @@ const formikEnhancer = withFormik({
       products: Yup.array()
         .of(
           Yup.object().shape({
+            profitability: Yup.string()
+              .matches(/(high|medium)/, 'Rentabilidade ruim')
+              .required('Rentabilidade ruim'),
             name: Yup.array()
               .of(
                 Yup.object().shape({
