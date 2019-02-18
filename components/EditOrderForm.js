@@ -4,20 +4,13 @@ import { FieldArray, FastField, ErrorMessage } from 'formik';
 import Select from 'react-select';
 import NumberFormat from 'react-number-format';
 
+import { EditOrderConsumer } from '../contexts/EditOrder';
+
 import Profitability from './Profitability';
 import Button from './Button';
 
 import { profitabilityType } from '../utils/Profitability';
 import { gray, white, black, darkGray, red, blue } from '../styles/Colors';
-
-const options = [
-  { value: 'Food', label: 'Food' },
-  { value: 'Being Fabulous', label: 'Being Fabulous' },
-  { value: 'Ken Wheeler', label: 'Ken Wheeler' },
-  { value: 'ReasonML', label: 'ReasonML' },
-  { value: 'Unicorns', label: 'Unicorns' },
-  { value: 'Kittens', label: 'Kittens' }
-];
 
 const validateQuantity = (value, multiple) => {
   return value % multiple !== 0 && `Qtd. mult. de ${multiple}`;
@@ -71,6 +64,7 @@ const Error = ({ name }) => (
 const SelectInput = ({
   id,
   placeholder,
+  options,
   value,
   onChange,
   onBlur,
@@ -91,10 +85,11 @@ const SelectInput = ({
         id={id}
         inputId="select-id"
         placeholder={placeholder}
+        cacheOptions
+        value={value}
         options={options}
         onChange={handleChange}
         onBlur={handleBlur}
-        value={value}
         noOptionsMessage={({ inputValue }) => `${inputValue} não encontrado`}
         styles={{
           control: (provided, { isFocused }) => ({
@@ -181,141 +176,148 @@ const EditOrderForm = ({
   setFieldTouched
 }) => {
   return (
-    <div className="overflow-container">
-      <div className="overflow-content">
-        <Label text="Cliente" id="customer">
-          <SelectInput
-            id="customer"
-            placeholder="Selecione um cliente"
-            value={values.customer}
-            error={errors.customer}
-            touched={touched.customer}
-            onChange={setFieldValue}
-            onBlur={setFieldTouched}
-          />
-        </Label>
+    <EditOrderConsumer>
+      {({ customersList, productsList }) => (
+        <div className="overflow-container">
+          <div className="overflow-content">
+            <Label text="Cliente" id="customer">
+              <SelectInput
+                id="customer"
+                placeholder="Selecione um cliente"
+                options={customersList}
+                value={values.customer}
+                error={errors.customer}
+                touched={touched.customer}
+                onChange={setFieldValue}
+                onBlur={setFieldTouched}
+              />
+            </Label>
 
-        <Label text="Produtos" id="products">
-          <FieldArray
-            name="products"
-            render={({ remove, push, form }) => (
-              <div>
-                {values.products.map((friend, index) => (
-                  <div key={index} className="input-group">
-                    <FastField
-                      name={`products[${index}].profitability`}
-                      render={({ field }) => (
-                        <Profitability
-                          {...field}
-                          style={{ marginRight: 10, fontWeight: 500 }}
+            <Label text="Produtos" id="products">
+              <FieldArray
+                name="products"
+                render={({ remove, push, form }) => (
+                  <div>
+                    {values.products.map((friend, index) => (
+                      <div key={index} className="input-group">
+                        <FastField
+                          name={`products[${index}].profitability`}
+                          render={({ field }) => (
+                            <Profitability
+                              {...field}
+                              style={{ marginRight: 10, fontWeight: 500 }}
+                            />
+                          )}
                         />
-                      )}
-                    />
-                    <FastField
-                      name={`products[${index}].name`}
-                      id={`products[${index}].name`}
-                      placeholder="Selecione um produto"
-                      value={form.values.products[index].value}
-                      error={
-                        typeof form.errors.products === 'object' &&
-                        form.errors.products[index]
-                      }
-                      touched={form.touched.products}
-                      onChange={setFieldValue}
-                      onBlur={setFieldTouched}
-                      width="60%"
-                      marginRight="10px"
-                      component={SelectInput}
-                    />
-                    <FastField
-                      type="text"
-                      name={`products[${index}].quantity`}
-                      placeholder="Qtd."
-                      width="15%"
-                      validate={value =>
-                        validateQuantity(
-                          value,
-                          form.values.products[index].multiple
-                        )
-                      }
-                      onChange={e => {
-                        form.setFieldValue(
-                          `products[${index}].quantity`,
-                          e.target.value.replace(/[^\d]/g, '')
-                        );
-                      }}
-                      component={Input}
-                    />
-                    <FastField
-                      type="text"
-                      name={`products.${index}.price`}
-                      placeholder="Preço Unit."
-                      id={index.toString()}
-                      width="25%"
-                      money="true"
-                      onChange={e => {
-                        form.setFieldValue(
-                          `products[${index}].price`,
-                          e.target.value
-                        );
-                        form.setFieldValue(
-                          `products[${index}].profitability`,
-                          profitabilityType(
-                            form.values.products[index].priceFixed,
-                            e.target.value
-                          )
-                        );
-                      }}
-                      component={Input}
-                    />
+                        <FastField
+                          name={`products[${index}].name`}
+                          id={`products[${index}].name`}
+                          placeholder="Selecione um produto"
+                          options={productsList}
+                          value={form.values.products[index].value}
+                          error={
+                            typeof form.errors.products === 'object' &&
+                            form.errors.products[index]
+                          }
+                          touched={form.touched.products}
+                          onChange={setFieldValue}
+                          onBlur={setFieldTouched}
+                          width="60%"
+                          marginRight="10px"
+                          component={SelectInput}
+                        />
+                        <FastField
+                          type="text"
+                          name={`products[${index}].quantity`}
+                          placeholder="Qtd."
+                          width="15%"
+                          validate={value =>
+                            validateQuantity(
+                              value,
+                              form.values.products[index].multiple
+                            )
+                          }
+                          onChange={e => {
+                            form.setFieldValue(
+                              `products[${index}].quantity`,
+                              e.target.value.replace(/[^\d]/g, '')
+                            );
+                          }}
+                          component={Input}
+                        />
+                        <FastField
+                          type="text"
+                          name={`products.${index}.price`}
+                          placeholder="Preço Unit."
+                          id={index.toString()}
+                          width="25%"
+                          money="true"
+                          onChange={e => {
+                            form.setFieldValue(
+                              `products[${index}].price`,
+                              e.target.value
+                            );
+                            form.setFieldValue(
+                              `products[${index}].profitability`,
+                              profitabilityType(
+                                form.values.products[index].priceFixed,
+                                e.target.value
+                              )
+                            );
+                          }}
+                          component={Input}
+                        />
+                        <Button
+                          text="x"
+                          fontColor={darkGray}
+                          onClick={() => remove(index)}
+                        />
+                      </div>
+                    ))}
                     <Button
-                      text="x"
-                      fontColor={darkGray}
-                      onClick={() => remove(index)}
+                      text="Adicionar produto"
+                      onClick={() =>
+                        push({
+                          name: [],
+                          quantity: '',
+                          priceFixed: '100,00',
+                          price: '100,00',
+                          multiple: 2,
+                          profitability: 'medium'
+                        })
+                      }
                     />
+                    {form.errors &&
+                      typeof form.errors.products === 'string' && (
+                        <Error name="products" />
+                      )}
                   </div>
-                ))}
-                <Button
-                  text="Adicionar produto"
-                  onClick={() =>
-                    push({
-                      name: [],
-                      quantity: '',
-                      priceFixed: '100,00',
-                      price: '100,00',
-                      multiple: 2,
-                      profitability: 'medium'
-                    })
-                  }
-                />
-                {form.errors && typeof form.errors.products === 'string' && (
-                  <Error name="products" />
                 )}
-              </div>
-            )}
-          />
-        </Label>
-      </div>
+              />
+            </Label>
+          </div>
 
-      <style jsx>
-        {`
-          .overflow-container {
-            flex: 1;
-            overflow: auto;
-          }
+          <style jsx>
+            {`
+              .overflow-container {
+                flex: 1;
+                overflow: auto;
+              }
 
-          .overflow-content {
-            padding: 20px;
-          }
+              .overflow-content {
+                padding: 20px;
+              }
 
-          .input-group {
-            display: flex;
-            align-items: baseline;
-            margin-bottom: 15px;
-          }
-        `}
-      </style>
-    </div>
+              .input-group {
+                display: flex;
+                align-items: baseline;
+                margin-bottom: 15px;
+              }
+            `}
+          </style>
+        </div>
+      )}
+    </EditOrderConsumer>
   );
 };
 
