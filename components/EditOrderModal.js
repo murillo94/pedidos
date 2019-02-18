@@ -7,7 +7,7 @@ import { withFormik } from 'formik';
 import * as Yup from 'yup';
 import FocusLock from 'react-focus-lock';
 
-import EditRequestForm from './EditRequestForm';
+import EditOrderForm from './EditOrderForm';
 import Profitability from './Profitability';
 import Button from './Button';
 
@@ -87,7 +87,7 @@ const formikEnhancer = withFormik({
   }),
   handleSubmit: (values, { props, setSubmitting }) => {
     setSubmitting(false);
-    props.onRequestClose();
+    props.onClose();
   },
   displayName: 'Modal'
 });
@@ -95,7 +95,7 @@ const formikEnhancer = withFormik({
 const Modal = props => {
   const {
     title,
-    onRequestClose,
+    onClose,
     values,
     touched,
     errors,
@@ -119,7 +119,7 @@ const Modal = props => {
     >
       <div className="container">
         <Header title={title} />
-        <EditRequestForm
+        <EditOrderForm
           {...{
             values,
             touched,
@@ -130,7 +130,7 @@ const Modal = props => {
             setFieldTouched
           }}
         />
-        <Footer {...{ onRequestClose, values, isSubmitting, isValid }} />
+        <Footer {...{ onClose, values, isSubmitting, isValid }} />
       </div>
 
       <style jsx>
@@ -209,7 +209,7 @@ const Header = ({ title }) => (
 
 const Footer = memo(
   // eslint-disable-next-line no-unused-vars
-  ({ onRequestClose, values, isSubmitting, isValid }) => {
+  ({ onClose, values, isSubmitting, isValid }) => {
     const modalRef = useRef();
 
     const quantityTotal = values.products.reduce(
@@ -262,7 +262,7 @@ const Footer = memo(
           </div>
         </div>
         <div>
-          <Button text="Cancelar" refs={modalRef} onClick={onRequestClose} />
+          <Button text="Cancelar" refs={modalRef} onClick={onClose} />
           <Button
             type="submit"
             text="Salvar"
@@ -308,9 +308,9 @@ const Footer = memo(
 
 const ModalForm = formikEnhancer(Modal);
 
-const EditRequestModal = ({ title, onRequestClose }) => {
+const EditOrderModal = ({ title, onClose }) => {
   const escModal = event => {
-    if (event.keyCode === 27) onRequestClose();
+    if (event.keyCode === 27) onClose();
   };
 
   useLayoutEffect(() => {
@@ -322,10 +322,10 @@ const EditRequestModal = ({ title, onRequestClose }) => {
 
   return ReactDOM.createPortal(
     <FocusLock>
-      <ModalForm title={title} onRequestClose={onRequestClose} />
+      <ModalForm title={title} onClose={onClose} />
     </FocusLock>,
     document.body
   );
 };
 
-export default EditRequestModal;
+export default EditOrderModal;

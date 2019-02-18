@@ -4,9 +4,9 @@ import { white, darkGray } from '../styles/Colors';
 
 import Profitability from './Profitability';
 import Button from './Button';
-import EditRequestModal from './EditRequestModal';
+import EditOrderModal from './EditOrderModal';
 
-import { profitabilityOptions } from '../utils/ProfitabilityOptions';
+import { profitabilityOptions } from '../utils/Profitability';
 
 const Item = ({
   clientName = '',
@@ -99,10 +99,7 @@ const List = ({ data = [] }) => {
           />
         ))}
         {isOpen && (
-          <EditRequestModal
-            title="Editar pedido"
-            onRequestClose={handleModal}
-          />
+          <EditOrderModal title="Editar pedido" onClose={handleModal} />
         )}
       </>
     );

@@ -4,11 +4,11 @@ import Page from '../layouts/Page';
 import Header from '../components/Header';
 import List from '../components/List';
 
-import GetRequests from '../services/GetRequests';
+import GetOrders from '../services/GetOrders';
 
-export default class Requests extends Component {
+export default class Order extends Component {
   static async getInitialProps() {
-    const result = await GetRequests();
+    const result = await GetOrders();
 
     return { data: result };
   }

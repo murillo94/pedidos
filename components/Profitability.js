@@ -1,4 +1,4 @@
-import { profitabilityOptions } from '../utils/ProfitabilityOptions';
+import { profitabilityOptions } from '../utils/Profitability';
 
 const Profitability = ({ value = 'high', message = '$', ...props }) => (
   <>

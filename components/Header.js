@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 import Button from './Button';
-import EditRequestModal from './EditRequestModal';
+import EditOrderModal from './EditOrderModal';
 
 import { darkGray } from '../styles/Colors';
 
@@ -23,10 +23,7 @@ const Header = ({ title, subTitle }) => {
       </div>
 
       {isOpen && (
-        <EditRequestModal
-          title="Adicionar pedido"
-          onRequestClose={handleModal}
-        />
+        <EditOrderModal title="Adicionar pedido" onClose={handleModal} />
       )}
 
       <style jsx>

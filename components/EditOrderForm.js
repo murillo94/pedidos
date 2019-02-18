@@ -7,7 +7,7 @@ import NumberFormat from 'react-number-format';
 import Profitability from './Profitability';
 import Button from './Button';
 
-import { profitabilityType } from '../utils/ProfitabilityOptions';
+import { profitabilityType } from '../utils/Profitability';
 import { gray, white, black, darkGray, red, blue } from '../styles/Colors';
 
 const options = [
@@ -173,7 +173,7 @@ const Input = ({ field, ...props }) => {
   );
 };
 
-const EditRequestForm = ({
+const EditOrderForm = ({
   values,
   touched,
   errors,
@@ -319,4 +319,4 @@ const EditRequestForm = ({
   );
 };
 
-export default EditRequestForm;
+export default EditOrderForm;
