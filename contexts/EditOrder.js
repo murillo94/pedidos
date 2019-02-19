@@ -2,17 +2,8 @@ import React, { useState } from 'react';
 
 const EditOrderContext = React.createContext();
 
-const options = [
-  { value: 'Food', label: 'Food' },
-  { value: 'Being Fabulous', label: 'Being Fabulous' },
-  { value: 'Ken Wheeler', label: 'Ken Wheeler' },
-  { value: 'ReasonML', label: 'ReasonML' },
-  { value: 'Unicorns', label: 'Unicorns' },
-  { value: 'Kittens', label: 'Kittens' }
-];
-
 const EditOrderProvider = ({ children }) => {
-  const [customersList, setCustomersList] = useState(options);
+  const [customersList, setCustomersList] = useState([]);
   const [productsList, setProductsList] = useState([]);
 
   return (
@@ -21,10 +12,10 @@ const EditOrderProvider = ({ children }) => {
         customersList,
         productsList,
         addCustomersList: newCustomersList => {
-          setCustomersList([...customersList, newCustomersList]);
+          setCustomersList(newCustomersList);
         },
         addProductList: newProductsList => {
-          setProductsList({ ...productsList, newProductsList });
+          setProductsList(newProductsList);
         }
       }}
     >
