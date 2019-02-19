@@ -10,7 +10,7 @@ const Get = async (collection, field) => {
       .then(snapshot => {
         const data = [];
         snapshot.forEach(doc => {
-          data.push(doc.data());
+          data.push({ ...doc.data(), token: doc.id });
         });
         resolve(data);
       })
