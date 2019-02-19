@@ -31,7 +31,7 @@ O uso das tecnologias descritas abaixo foram pensadas em uma arquitetura servele
 - `git clone git@github.com:murillo94/teste-mercos-fullstack.git`
 - `yarn install`
 
-Criae um arquivo `.env` com as suas chaves do [Cloud Firestore](https://firebase.google.com/products/firestore/).
+Crie um arquivo `.env` com as suas chaves do [Cloud Firestore](https://firebase.google.com/products/firestore/).
 
 ```
 FIREBASE_API_KEY=<API_KEY>
@@ -42,9 +42,9 @@ FIREBASE_STORAGE_BUCKET=<BUCKET>.appspot.com
 FIREBASE_MESSAGING_SENDER_ID=<SENDER_ID>
 ```
 
-Depois de criado o `.env`, execute o script abaixo:
+Depois de criado o `.env`, execute os comandos abaixo:
 
-- `yarn init-firebase`
+- `yarn init-firebase` (apenas uma vez no ínicio do projeto, depois não é mais necessário)
 - `yarn dev`
 
 ## url
