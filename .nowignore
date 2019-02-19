@@ -7,3 +7,4 @@ README.md
 .prettierrc
 node_modules
 dist
+scripts
