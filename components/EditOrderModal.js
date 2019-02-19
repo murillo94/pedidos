@@ -156,7 +156,7 @@ const Modal = props => {
             setFieldTouched
           }}
         />
-        <Footer {...{ onClose, values, touched, isSubmitting, isValid }} />
+        <Footer {...{ onClose, values, isSubmitting, isValid }} />
       </div>
 
       <style jsx>
@@ -235,9 +235,7 @@ const Header = ({ title }) => (
 
 const Footer = memo(
   // eslint-disable-next-line no-unused-vars
-  ({ onClose, values, touched, isSubmitting, isValid }) => {
-    const hasTouched =
-      Object.entries(touched).length === 0 && touched.constructor === Object;
+  ({ onClose, values, isSubmitting, isValid }) => {
     const modalRef = useRef();
 
     const quantityTotal = values.products.reduce(
@@ -289,7 +287,7 @@ const Footer = memo(
             fontColor={white}
             backgroundColor={green}
             marginLeft={10}
-            disabled={hasTouched || isSubmitting}
+            disabled={isSubmitting}
           />
         </div>
 
