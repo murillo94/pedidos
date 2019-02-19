@@ -48,8 +48,7 @@ export const products = [
 
 export const orders = [
   {
-    id: 1,
-    customer: { id: 1, name: 'Darth Vader' },
+    customer: [{ id: 1, name: 'Darth Vader' }],
     products: [
       {
         id: 2,
@@ -65,8 +64,7 @@ export const orders = [
     profitability: 'high'
   },
   {
-    id: 2,
-    customer: { id: 3, name: 'Luke Skywalker' },
+    customer: [{ id: 3, name: 'Luke Skywalker' }],
     products: [
       {
         id: 4,
