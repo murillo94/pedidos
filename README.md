@@ -21,7 +21,17 @@ O uso das tecnologias descritas abaixo foram pensadas em uma arquitetura servele
 
 ## Usando localmente
 
-Antes de tudo, é necessário criar um arquivo `.env` com as suas chaves do [Cloud Firestore](https://firebase.google.com/products/firestore/).
+#### Necessário
+
+- [Node.js](https://nodejs.org/) (mais recentes)
+- [Yarn](https://yarnpkg.com/)
+
+#### Comandos
+
+- `git clone git@github.com:murillo94/teste-mercos-fullstack.git`
+- `yarn install`
+
+Criae um arquivo `.env` com as suas chaves do [Cloud Firestore](https://firebase.google.com/products/firestore/).
 
 ```
 FIREBASE_API_KEY=<API_KEY>
@@ -32,15 +42,9 @@ FIREBASE_STORAGE_BUCKET=<BUCKET>.appspot.com
 FIREBASE_MESSAGING_SENDER_ID=<SENDER_ID>
 ```
 
-#### Necessário
+Depois de criado o `.env`, execute o script abaixo:
 
-- [Node.js](https://nodejs.org/) (mais recentes)
-- [Yarn](https://yarnpkg.com/)
-
-#### Comandos
-
-- `git clone git@github.com:murillo94/teste-mercos-fullstack.git`
-- `yarn install`
+- `yarn init-firebase`
 - `yarn dev`
 
 ## url
