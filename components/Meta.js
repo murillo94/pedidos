@@ -33,7 +33,7 @@ const Meta = () => (
           outline: 0 !important;
           border-color: ${blue} !important;
           box-shadow: 0 0 0 2px ${blue} !important;
-          transition: box-shadow 0.2s !important;
+          transition: box-shadow 0.12s !important;
         }
 
         input:not(#select-id) {
@@ -45,7 +45,7 @@ const Meta = () => (
           border-radius: 4px;
           padding: 9px;
           box-sizing: border-box;
-          transition: all 0.2s;
+          transition: all 0.12s;
         }
 
         input:hover:not(#select-id) {
