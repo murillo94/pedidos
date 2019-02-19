@@ -83,7 +83,7 @@ const Item = ({
   </>
 );
 
-const List = ({ data = [] }) => {
+const List = ({ isLoading, data = [] }) => {
   const [isOpen, setOpen] = useState(false);
   const [customer, setCustomer] = useState([]);
   const [products, setProducts] = useState([]);
@@ -126,7 +126,7 @@ const List = ({ data = [] }) => {
 
   return (
     <div>
-      Você não possui pedidos.
+      {isLoading ? 'Carregando...' : 'Você não possui pedidos.'}
       <style jsx>
         {`
           div {
