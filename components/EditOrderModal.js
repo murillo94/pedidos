@@ -11,7 +11,10 @@ import EditOrderForm from './EditOrderForm';
 import Profitability from './Profitability';
 import Button from './Button';
 
+import { profitabilityTypeWithArray } from '../utils/Profitability';
 import { white, gray, lightGray, green } from '../styles/Colors';
+
+import Put from '../services/Put';
 
 const formikEnhancer = withFormik({
   validationSchema: () =>
@@ -81,8 +84,9 @@ const formikEnhancer = withFormik({
         )
         .required('Informe um produto')
     }),
-  mapPropsToValues: ({ customer = [], products = [] }) => ({
-    customer: customer ? [customer] : [],
+  mapPropsToValues: ({ token = '', customer = [], products = [] }) => ({
+    token: token || '',
+    customer: customer || [],
     products:
       products.map(x => ({
         ...x,
@@ -90,17 +94,24 @@ const formikEnhancer = withFormik({
         priceFixed: x.price
       })) || []
   }),
-  handleSubmit: (values, { props, setSubmitting }) => {
-    /* const { customer, products } = values;
-
+  handleSubmit: async (values, { props }) => {
+    const { token, customer, products } = values;
     const customerFinal = customer.map(({ id, name }) => ({ id, name }));
     const productsFinal = products.map(x => ({
       ...x,
       name: x.name[0].name,
       quantity: Number(x.quantity)
-    })); */
+    }));
+    const profitability = profitabilityTypeWithArray(productsFinal);
+    const data = {
+      customer: customerFinal,
+      products: productsFinal,
+      profitability,
+      date: Date.now()
+    };
 
-    setSubmitting(false);
+    await Put('orders', token, data);
+
     props.onClose();
   },
   displayName: 'Modal'
@@ -241,15 +252,7 @@ const Footer = memo(
       .replace(/,/g, '.')
       .replace(/.([^.]*)$/, ',$1');
 
-    const profitabilityType = values.products.length
-      ? [...new Set(values.products.map(({ profitability }) => profitability))]
-      : 'medium';
-
-    const formatProfitabilityType = profitabilityType.includes('low')
-      ? 'low'
-      : profitabilityType.includes('medium')
-      ? 'medium'
-      : 'high';
+    const profitabilityType = profitabilityTypeWithArray(values.products);
 
     useLayoutEffect(() => {
       modalRef.current.focus();
@@ -270,7 +273,7 @@ const Footer = memo(
             {/* eslint-disable-next-line react/jsx-one-expression-per-line */}
             <span>R$ {formatPriceTotal}</span>
             <Profitability
-              value={formatProfitabilityType}
+              value={profitabilityType}
               style={{ marginLeft: 5, fontWeight: 500 }}
             />
           </div>
@@ -322,7 +325,7 @@ const Footer = memo(
 
 const ModalForm = formikEnhancer(Modal);
 
-const EditOrderModal = ({ title, onClose, customer, products }) => {
+const EditOrderModal = ({ token, title, onClose, customer, products }) => {
   const escModal = event => {
     if (event.keyCode === 27) onClose();
   };
@@ -337,6 +340,7 @@ const EditOrderModal = ({ title, onClose, customer, products }) => {
   return ReactDOM.createPortal(
     <FocusLock>
       <ModalForm
+        token={token}
         title={title}
         customer={customer}
         products={products}

@@ -24,7 +24,7 @@ export const profitabilityOptions = {
   }
 };
 
-export const profitabilityType = (fixed, normal) => {
+export const profitabilityTypeWithNumber = (fixed, normal) => {
   const format = value => Number(value.replace(/[^\d]/g, ''));
   const priceFixed = format(fixed);
   const price = format(normal);
@@ -32,4 +32,19 @@ export const profitabilityType = (fixed, normal) => {
   if (price > priceFixed) return 'high';
   if (priceFixed - (priceFixed * 10) / 100 <= price) return 'medium';
   return 'low';
+};
+
+export const profitabilityTypeWithArray = list => {
+  if (list.length) {
+    const uniqueListProfitability = [
+      ...new Set(list.map(({ profitability }) => profitability))
+    ];
+    return uniqueListProfitability.includes('low')
+      ? 'low'
+      : uniqueListProfitability.includes('medium')
+      ? 'medium'
+      : 'high';
+  }
+
+  return 'medium';
 };

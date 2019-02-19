@@ -10,7 +10,7 @@ import { EditOrderConsumer } from '../contexts/EditOrder';
 import Profitability from './Profitability';
 import Button from './Button';
 
-import { profitabilityType } from '../utils/Profitability';
+import { profitabilityTypeWithNumber } from '../utils/Profitability';
 import { gray, white, black, darkGray, red, blue } from '../styles/Colors';
 
 import Get from '../services/Get';
@@ -306,7 +306,7 @@ const EditOrderForm = ({
                             );
                             form.setFieldValue(
                               `products[${index}].profitability`,
-                              profitabilityType(
+                              profitabilityTypeWithNumber(
                                 form.values.products[index].priceFixed || '0',
                                 e.target.value
                               )

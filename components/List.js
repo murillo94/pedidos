@@ -9,10 +9,10 @@ import EditOrderModal from './EditOrderModal';
 import { profitabilityOptions } from '../utils/Profitability';
 
 const Item = ({
-  id,
-  name = '',
+  customer = [],
   profitability = null,
   products = [],
+  token = '',
   total = products.length || 0,
   handleEditItem
 }) => (
@@ -23,7 +23,7 @@ const Item = ({
     >
       <div className="info">
         <div>
-          <div className="title">{name}</div>
+          <div className="title">{customer[0].name}</div>
           <div className="subTitle">
             {total !== 1 ? `${total} produtos` : `${total} produto`}
           </div>
@@ -39,7 +39,7 @@ const Item = ({
         fontSize={13}
         fontColor={darkGray}
         borderColor="transparent"
-        onClick={() => handleEditItem({ id, name }, products)}
+        onClick={() => handleEditItem(customer, products, token)}
       />
     </div>
 
@@ -87,10 +87,12 @@ const List = ({ data = [] }) => {
   const [isOpen, setOpen] = useState(false);
   const [customer, setCustomer] = useState([]);
   const [products, setProducts] = useState([]);
+  const [token, setToken] = useState();
 
-  const handleEditItem = (valuesCustomer, valuesProducts) => {
-    setCustomer(valuesCustomer);
-    setProducts(valuesProducts);
+  const handleEditItem = (valueCustomer, valueProducts, valueToken) => {
+    setCustomer(valueCustomer);
+    setProducts(valueProducts);
+    setToken(valueToken);
     setOpen(!isOpen);
   };
 
@@ -102,15 +104,16 @@ const List = ({ data = [] }) => {
     return (
       <>
         {data.map((
-          { customer: { id, name }, profitability, products } // eslint-disable-line no-shadow
+          { customer, profitability, products, token } // eslint-disable-line no-shadow
         ) => (
           <Item
-            key={id}
-            {...{ id, name, profitability, products, handleEditItem }}
+            key={token}
+            {...{ customer, profitability, products, token, handleEditItem }}
           />
         ))}
         {isOpen && (
           <EditOrderModal
+            token={token}
             title="Editar pedido"
             customer={customer}
             products={products}
