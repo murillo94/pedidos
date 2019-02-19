@@ -6,13 +6,13 @@ import EditOrderProvider from '../contexts/EditOrder';
 import Header from '../components/Header';
 import List from '../components/List';
 
-import GetOrders from '../services/GetOrders';
+import Get from '../services/Get';
 
 export default class Order extends Component {
   static async getInitialProps() {
-    const result = await GetOrders();
+    const data = await Get('requests', 'date');
 
-    return { data: result };
+    return { data };
   }
 
   render() {
