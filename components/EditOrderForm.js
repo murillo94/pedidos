@@ -287,7 +287,7 @@ const EditOrderForm = ({
                           onChange={e => {
                             form.setFieldValue(
                               `products[${index}].quantity`,
-                              Number(e.target.value.replace(/[^\d]/g, ''))
+                              e.target.value.replace(/[^\d]/g, '')
                             );
                           }}
                           component={Input}

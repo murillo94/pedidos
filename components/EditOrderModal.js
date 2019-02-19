@@ -96,7 +96,8 @@ const formikEnhancer = withFormik({
     const customerFinal = customer.map(({ id, name }) => ({ id, name }));
     const productsFinal = products.map(x => ({
       ...x,
-      name: x.name[0].name
+      name: x.name[0].name,
+      quantity: Number(x.quantity)
     })); */
 
     setSubmitting(false);
