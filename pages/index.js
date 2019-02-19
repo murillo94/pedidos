@@ -10,7 +10,7 @@ import Get from '../services/Get';
 
 export default class Order extends Component {
   static async getInitialProps() {
-    const data = await Get('requests', 'date');
+    const data = await Get('orders', 'date');
 
     return { data };
   }

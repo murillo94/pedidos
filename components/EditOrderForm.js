@@ -225,7 +225,7 @@ const EditOrderForm = ({
               <SelectInput
                 id="customer"
                 placeholder="Selecione um cliente"
-                collection="clients"
+                collection="customers"
                 options={customersList}
                 value={values.customer}
                 error={errors.customer}
