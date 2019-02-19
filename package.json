@@ -19,6 +19,7 @@
   "dependencies": {
     "add": "^2.0.6",
     "dinero.js": "^1.5.0",
+    "esm": "^3.2.5",
     "firebase": "^5.8.2",
     "formik": "^1.5.0",
     "next": "^8.0.1",
@@ -35,7 +36,8 @@
     "dev": "next",
     "now-build": "next build && next export -o dist",
     "deploy": "now && now alias",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "init-firebase": "node -r dotenv/config -r esm scripts/firebase.js"
   },
   "husky": {
     "hooks": {
