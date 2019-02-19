@@ -1,10 +1,10 @@
-# Teste técnico Mercos (dev full stack)
+# Teste Mercos (full stack)
 
 Uma aplicação que adiciona pedidos e ​altera os pedidos existentes.
 
 ## Tecnologias
 
-O uso das tecnologias descritas abaixo foram pensadas em uma arquitetura serveless, escalável e com portabilidade.
+O uso das tecnologias descritas abaixo foram pensadas em uma arquitetura serverless, escalável e com portabilidade.
 
 #### Front End
 
@@ -28,7 +28,7 @@ O uso das tecnologias descritas abaixo foram pensadas em uma arquitetura servele
 
 #### Comandos
 
-- `git clone git@github.com:murillo94/teste-mercos-fullstack.git`
+- `git clone git@github.com:murillo94/pedidos.git`
 - `yarn install`
 
 Crie um arquivo `.env` com as suas chaves do [Cloud Firestore](https://firebase.google.com/products/firestore/).
@@ -49,4 +49,4 @@ Depois de criado o `.env`, execute os comandos abaixo:
 
 ## url
 
-https://teste-mercos-fullstack.now.sh
+https://pedidos.now.sh

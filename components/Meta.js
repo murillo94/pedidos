@@ -11,7 +11,7 @@ const Meta = () => (
       <link rel="apple-touch-icon" href="../static/favicon.ico" />
       <link rel="shortcut icon" href="../static/favicon.ico" />
 
-      <title>Pedidos - Teste técnico Mercos</title>
+      <title>Pedidos</title>
     </Head>
 
     <style jsx global>

@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "name": "teste-mercos-fullstack",
-  "alias": ["https://teste-mercos-fullstack.now.sh"],
+  "name": "pedidos",
+  "alias": ["https://pedidos.now.sh"],
   "builds": [{ "src": "package.json", "use": "@now/static-build" }]
 }
