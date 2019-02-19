@@ -19,6 +19,10 @@ const Order = () => {
     setLoading(false);
   };
 
+  const onSave = async value => {
+    await setData([value, ...data.filter(x => x.token !== value.token)]);
+  };
+
   useEffect(() => {
     fetchOrders();
   }, []);
@@ -26,8 +30,12 @@ const Order = () => {
   return (
     <EditOrderProvider>
       <Page>
-        <Header title="Pedidos" subTitle={`${data.length} pedidos no total`} />
-        <List isLoading={isLoading} data={data} />
+        <Header
+          title="Pedidos"
+          subTitle={`${data.length} pedidos no total`}
+          onSave={onSave}
+        />
+        <List data={data} isLoading={isLoading} onSave={onSave} />
       </Page>
     </EditOrderProvider>
   );

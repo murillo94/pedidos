@@ -83,7 +83,7 @@ const Item = ({
   </>
 );
 
-const List = ({ isLoading, data = [] }) => {
+const List = ({ data = [], isLoading, onSave }) => {
   const [isOpen, setOpen] = useState(false);
   const [customer, setCustomer] = useState([]);
   const [products, setProducts] = useState([]);
@@ -96,7 +96,7 @@ const List = ({ isLoading, data = [] }) => {
     setOpen(!isOpen);
   };
 
-  const handleModal = () => {
+  const handleClose = () => {
     setOpen(!isOpen);
   };
 
@@ -117,7 +117,8 @@ const List = ({ isLoading, data = [] }) => {
             title="Editar pedido"
             customer={customer}
             products={products}
-            onClose={handleModal}
+            onClose={handleClose}
+            onSave={onSave}
           />
         )}
       </>

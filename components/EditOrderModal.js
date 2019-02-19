@@ -110,7 +110,8 @@ const formikEnhancer = withFormik({
       date: Date.now()
     };
 
-    await Put('orders', token, data);
+    const id = await Put('orders', token, data);
+    await props.onSave({ ...data, token: id });
 
     props.onClose();
   },
@@ -325,7 +326,14 @@ const Footer = memo(
 
 const ModalForm = formikEnhancer(Modal);
 
-const EditOrderModal = ({ token, title, onClose, customer, products }) => {
+const EditOrderModal = ({
+  token,
+  title,
+  customer,
+  products,
+  onClose,
+  onSave
+}) => {
   const escModal = event => {
     if (event.keyCode === 27) onClose();
   };
@@ -345,6 +353,7 @@ const EditOrderModal = ({ token, title, onClose, customer, products }) => {
         customer={customer}
         products={products}
         onClose={onClose}
+        onSave={onSave}
       />
     </FocusLock>,
     document.body

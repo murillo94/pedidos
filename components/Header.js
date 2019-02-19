@@ -5,7 +5,7 @@ import EditOrderModal from './EditOrderModal';
 
 import { darkGray } from '../styles/Colors';
 
-const Header = ({ title, subTitle }) => {
+const Header = ({ title, subTitle, onSave }) => {
   const [isOpen, setOpen] = useState(false);
 
   const handleModal = () => {
@@ -23,7 +23,11 @@ const Header = ({ title, subTitle }) => {
       </div>
 
       {isOpen && (
-        <EditOrderModal title="Adicionar pedido" onClose={handleModal} />
+        <EditOrderModal
+          title="Adicionar pedido"
+          onClose={handleModal}
+          onSave={onSave}
+        />
       )}
 
       <style jsx>
