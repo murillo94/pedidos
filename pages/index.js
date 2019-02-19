@@ -1,4 +1,3 @@
-import { Component } from 'react';
 import Page from '../layouts/Page';
 
 import EditOrderProvider from '../contexts/EditOrder';
@@ -8,26 +7,18 @@ import List from '../components/List';
 
 import Get from '../services/Get';
 
-export default class Order extends Component {
-  static async getInitialProps() {
-    const data = await Get('orders', 'date');
+const Order = ({ data }) => (
+  <EditOrderProvider>
+    <Page>
+      <Header title="Pedidos" subTitle={`${data.length} pedidos no total`} />
+      <List data={data} />
+    </Page>
+  </EditOrderProvider>
+);
 
-    return { data };
-  }
+Order.getInitialProps = async () => {
+  const data = await Get('orders', 'date');
+  return { data };
+};
 
-  render() {
-    const { data } = this.props;
-
-    return (
-      <EditOrderProvider>
-        <Page>
-          <Header
-            title="Pedidos"
-            subTitle={`${data.length} pedidos no total`}
-          />
-          <List data={data} />
-        </Page>
-      </EditOrderProvider>
-    );
-  }
-}
+export default Order;
