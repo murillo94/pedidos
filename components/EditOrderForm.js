@@ -1,5 +1,6 @@
 /* eslint-disable jsx-a11y/label-has-for */
 
+import { useState } from 'react';
 import { FieldArray, FastField, ErrorMessage } from 'formik';
 import Select from 'react-select';
 import NumberFormat from 'react-number-format';
@@ -12,8 +13,12 @@ import Button from './Button';
 import { profitabilityType } from '../utils/Profitability';
 import { gray, white, black, darkGray, red, blue } from '../styles/Colors';
 
+import Get from '../services/Get';
+
 const validateQuantity = (value, multiple) => {
-  return value % multiple !== 0 && `Qtd. mult. de ${multiple}`;
+  return (
+    multiple !== 0 && value % multiple !== 0 && `Qtd. mult. de ${multiple}`
+  );
 };
 
 const Label = ({ text, id, children }) => (
@@ -63,15 +68,45 @@ const Error = ({ name }) => (
 
 const SelectInput = ({
   id,
+  position,
   placeholder,
+  collection,
   options,
   value,
   onChange,
   onBlur,
+  addOptions,
   width = '100%',
   marginRight = '0'
 }) => {
+  const [isLoading, setLoading] = useState(false);
+  const [data, setData] = useState(options);
+
+  const fetchOptions = async () => {
+    if (options.length === 0) {
+      setLoading(true);
+
+      const result = await Get(collection, 'name');
+      const resultFormat = result.map(x => ({
+        ...x,
+        label: x.name,
+        value: x.name
+      }));
+
+      addOptions(resultFormat);
+      setData(resultFormat);
+      setLoading(false);
+    }
+  };
+
   const handleChange = newValue => {
+    if (position) {
+      onChange(`products[${position}].id`, newValue.id);
+      onChange(`products[${position}].multiple`, newValue.multiple);
+      onChange(`products[${position}].priceFixed`, newValue.price);
+      onChange(`products[${position}].price`, newValue.price);
+    }
+
     onChange(id, [newValue]);
   };
 
@@ -85,12 +120,16 @@ const SelectInput = ({
         id={id}
         inputId="select-id"
         placeholder={placeholder}
-        cacheOptions
         value={value}
-        options={options}
+        options={data}
+        isLoading={isLoading}
+        getOptionLabel={res => res.name}
+        getOptionValue={res => res.id}
+        noOptionsMessage={({ inputValue }) => `${inputValue} não encontrado`}
+        loadingMessage={() => 'Carregando...'}
         onChange={handleChange}
         onBlur={handleBlur}
-        noOptionsMessage={({ inputValue }) => `${inputValue} não encontrado`}
+        onFocus={fetchOptions}
         styles={{
           control: (provided, { isFocused }) => ({
             ...provided,
@@ -144,7 +183,9 @@ const Input = ({ field, ...props }) => {
             allowNegative={false}
             autoComplete="off"
           />
-          {props.form.errors.products &&
+          {props.form.errors &&
+          props.form.errors.products &&
+          props.form.errors.products[props.id] &&
           props.form.errors.products[props.id].profitability &&
           !props.form.errors.products[props.id].price ? (
             <ErrorContainer message="Rentabilidade ruim" />
@@ -177,19 +218,21 @@ const EditOrderForm = ({
 }) => {
   return (
     <EditOrderConsumer>
-      {({ customersList, productsList }) => (
+      {({ customersList, addCustomersList, productsList, addProductList }) => (
         <div className="overflow-container">
           <div className="overflow-content">
             <Label text="Cliente" id="customer">
               <SelectInput
                 id="customer"
                 placeholder="Selecione um cliente"
+                collection="clients"
                 options={customersList}
                 value={values.customer}
                 error={errors.customer}
                 touched={touched.customer}
                 onChange={setFieldValue}
                 onBlur={setFieldTouched}
+                addOptions={addCustomersList}
               />
             </Label>
 
@@ -212,9 +255,11 @@ const EditOrderForm = ({
                         <FastField
                           name={`products[${index}].name`}
                           id={`products[${index}].name`}
+                          position={index.toString()}
                           placeholder="Selecione um produto"
+                          collection="products"
                           options={productsList}
-                          value={form.values.products[index].value}
+                          value={form.values.products[index].name}
                           error={
                             typeof form.errors.products === 'object' &&
                             form.errors.products[index]
@@ -222,6 +267,7 @@ const EditOrderForm = ({
                           touched={form.touched.products}
                           onChange={setFieldValue}
                           onBlur={setFieldTouched}
+                          addOptions={addProductList}
                           width="60%"
                           marginRight="10px"
                           component={SelectInput}
@@ -229,6 +275,7 @@ const EditOrderForm = ({
                         <FastField
                           type="text"
                           name={`products[${index}].quantity`}
+                          id={index.toString()}
                           placeholder="Qtd."
                           width="15%"
                           validate={value =>
@@ -240,14 +287,14 @@ const EditOrderForm = ({
                           onChange={e => {
                             form.setFieldValue(
                               `products[${index}].quantity`,
-                              e.target.value.replace(/[^\d]/g, '')
+                              Number(e.target.value.replace(/[^\d]/g, ''))
                             );
                           }}
                           component={Input}
                         />
                         <FastField
                           type="text"
-                          name={`products.${index}.price`}
+                          name={`products[${index}].price`}
                           placeholder="Preço Unit."
                           id={index.toString()}
                           width="25%"
@@ -260,12 +307,24 @@ const EditOrderForm = ({
                             form.setFieldValue(
                               `products[${index}].profitability`,
                               profitabilityType(
-                                form.values.products[index].priceFixed,
+                                form.values.products[index].priceFixed || '0',
                                 e.target.value
                               )
                             );
                           }}
                           component={Input}
+                        />
+                        <FastField
+                          type="hidden"
+                          name={`products[${index}].id`}
+                        />
+                        <FastField
+                          type="hidden"
+                          name={`products[${index}].multiple`}
+                        />
+                        <FastField
+                          type="hidden"
+                          name={`products[${index}].priceFixed`}
                         />
                         <Button
                           text="x"
@@ -276,16 +335,16 @@ const EditOrderForm = ({
                     ))}
                     <Button
                       text="Adicionar produto"
-                      onClick={() =>
+                      onClick={() => {
                         push({
                           name: [],
                           quantity: '',
-                          priceFixed: '100,00',
-                          price: '100,00',
-                          multiple: 2,
+                          priceFixed: '',
+                          price: '',
+                          multiple: 0,
                           profitability: 'medium'
-                        })
-                      }
+                        });
+                      }}
                     />
                     {form.errors &&
                       typeof form.errors.products === 'string' && (

@@ -19,8 +19,8 @@ const formikEnhancer = withFormik({
       customer: Yup.array()
         .of(
           Yup.object().shape({
-            label: Yup.string().required(),
-            value: Yup.string().required()
+            name: Yup.string().required(),
+            id: Yup.number().required()
           })
         )
         .required('Informe um cliente'),
@@ -33,8 +33,8 @@ const formikEnhancer = withFormik({
             name: Yup.array()
               .of(
                 Yup.object().shape({
-                  label: Yup.string().required(),
-                  value: Yup.string().required()
+                  name: Yup.string().required(),
+                  id: Yup.number().required()
                 })
               )
               .required('Obrigatório'),
@@ -81,11 +81,24 @@ const formikEnhancer = withFormik({
         )
         .required('Informe um produto')
     }),
-  mapPropsToValues: ({ customer, products }) => ({
-    customer: customer || [],
-    products: products || []
+  mapPropsToValues: ({ customer = [], products = [] }) => ({
+    customer: customer ? [customer] : [],
+    products:
+      products.map(x => ({
+        ...x,
+        name: [{ id: x.id, name: x.name }],
+        priceFixed: x.price
+      })) || []
   }),
   handleSubmit: (values, { props, setSubmitting }) => {
+    /* const { customer, products } = values;
+
+    const customerFinal = customer.map(({ id, name }) => ({ id, name }));
+    const productsFinal = products.map(x => ({
+      ...x,
+      name: x.name[0].name
+    })); */
+
     setSubmitting(false);
     props.onClose();
   },
@@ -308,7 +321,7 @@ const Footer = memo(
 
 const ModalForm = formikEnhancer(Modal);
 
-const EditOrderModal = ({ title, onClose }) => {
+const EditOrderModal = ({ title, onClose, customer, products }) => {
   const escModal = event => {
     if (event.keyCode === 27) onClose();
   };
@@ -322,7 +335,12 @@ const EditOrderModal = ({ title, onClose }) => {
 
   return ReactDOM.createPortal(
     <FocusLock>
-      <ModalForm title={title} onClose={onClose} />
+      <ModalForm
+        title={title}
+        customer={customer}
+        products={products}
+        onClose={onClose}
+      />
     </FocusLock>,
     document.body
   );

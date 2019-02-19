@@ -9,11 +9,12 @@ import EditOrderModal from './EditOrderModal';
 import { profitabilityOptions } from '../utils/Profitability';
 
 const Item = ({
-  clientName = '',
+  id,
+  name = '',
   profitability = null,
-  items = {},
-  total = items.length || 0,
-  handleModal
+  products = [],
+  total = products.length || 0,
+  handleEditItem
 }) => (
   <>
     <div
@@ -22,7 +23,7 @@ const Item = ({
     >
       <div className="info">
         <div>
-          <div className="title">{clientName}</div>
+          <div className="title">{name}</div>
           <div className="subTitle">
             {total !== 1 ? `${total} produtos` : `${total} produto`}
           </div>
@@ -38,7 +39,7 @@ const Item = ({
         fontSize={13}
         fontColor={darkGray}
         borderColor="transparent"
-        onClick={handleModal}
+        onClick={() => handleEditItem({ id, name }, products)}
       />
     </div>
 
@@ -84,6 +85,14 @@ const Item = ({
 
 const List = ({ data = [] }) => {
   const [isOpen, setOpen] = useState(false);
+  const [customer, setCustomer] = useState([]);
+  const [products, setProducts] = useState([]);
+
+  const handleEditItem = (valuesCustomer, valuesProducts) => {
+    setCustomer(valuesCustomer);
+    setProducts(valuesProducts);
+    setOpen(!isOpen);
+  };
 
   const handleModal = () => {
     setOpen(!isOpen);
@@ -92,14 +101,21 @@ const List = ({ data = [] }) => {
   if (data.length > 0) {
     return (
       <>
-        {data.map(({ clientId, clientName, profitability, items }) => (
+        {data.map((
+          { customer: { id, name }, profitability, products } // eslint-disable-line no-shadow
+        ) => (
           <Item
-            key={clientId}
-            {...{ clientName, profitability, items, handleModal }}
+            key={id}
+            {...{ id, name, profitability, products, handleEditItem }}
           />
         ))}
         {isOpen && (
-          <EditOrderModal title="Editar pedido" onClose={handleModal} />
+          <EditOrderModal
+            title="Editar pedido"
+            customer={customer}
+            products={products}
+            onClose={handleModal}
+          />
         )}
       </>
     );
