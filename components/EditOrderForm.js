@@ -295,8 +295,8 @@ const EditOrderForm = ({
                         <FastField
                           type="text"
                           name={`products[${index}].price`}
-                          placeholder="Preço Unit."
                           id={index.toString()}
+                          placeholder="Preço Unit."
                           width="25%"
                           money="true"
                           onChange={e => {
