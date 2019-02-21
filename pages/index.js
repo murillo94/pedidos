@@ -11,12 +11,18 @@ import Get from '../services/Get';
 
 const Order = () => {
   const [isLoading, setLoading] = useState(true);
+  const [isError, setError] = useState(false);
   const [data, setData] = useState([]);
 
   const fetchOrders = async () => {
-    const results = await Get('orders', 'date');
-    setData(results);
-    setLoading(false);
+    try {
+      const results = await Get('orders', 'date');
+      setData(results);
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      setError(true);
+    }
   };
 
   const onSave = async value => {
@@ -35,7 +41,12 @@ const Order = () => {
           subTitle={`${data.length} pedidos no total`}
           onSave={onSave}
         />
-        <List data={data} isLoading={isLoading} onSave={onSave} />
+        <List
+          data={data}
+          isLoading={isLoading}
+          isError={isError}
+          onSave={onSave}
+        />
       </Page>
     </EditOrderProvider>
   );

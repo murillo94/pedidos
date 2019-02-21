@@ -4,6 +4,7 @@ import { customers, products, orders } from './data';
 
 const batchDocs = async (collection, values) => {
   console.log(`Creating ${collection}`);
+
   const db = await initFirebase();
   const colRef = db.collection(collection);
 
@@ -27,8 +28,13 @@ const batchDocs = async (collection, values) => {
 };
 
 (async () => {
-  await batchDocs('customers', customers);
-  await batchDocs('products', products);
-  await batchDocs('orders', orders);
-  process.exit();
+  try {
+    await batchDocs('customers', customers);
+    await batchDocs('products', products);
+    await batchDocs('orders', orders);
+    process.exit();
+  } catch (error) {
+    console.log(`Something went wrong -> ${error}`);
+    process.exit();
+  }
 })();

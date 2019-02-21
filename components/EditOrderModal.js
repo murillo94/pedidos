@@ -1,89 +1,22 @@
-import { useRef, useLayoutEffect, memo } from 'react';
+import { useState, useRef, useLayoutEffect, memo } from 'react';
 import ReactDOM from 'react-dom';
 
-import isCurrency from 'validator/lib/isCurrency';
-import Dinero from 'dinero.js';
 import { withFormik } from 'formik';
-import * as Yup from 'yup';
+import Dinero from 'dinero.js';
 import FocusLock from 'react-focus-lock';
 
 import EditOrderForm from './EditOrderForm';
 import Profitability from './Profitability';
 import Button from './Button';
 
+import ValidationForm from '../utils/ValidationForm';
 import { profitabilityTypeWithArray } from '../utils/Profitability';
 import { white, gray, lightGray, green } from '../styles/Colors';
 
 import Put from '../services/Put';
 
 const formikEnhancer = withFormik({
-  validationSchema: () =>
-    Yup.object().shape({
-      customer: Yup.array()
-        .of(
-          Yup.object().shape({
-            name: Yup.string().required(),
-            id: Yup.number().required()
-          })
-        )
-        .required('Informe um cliente'),
-      products: Yup.array()
-        .of(
-          Yup.object().shape({
-            profitability: Yup.string()
-              .matches(/(high|medium)/, 'Rentabilidade ruim')
-              .required('Rentabilidade ruim'),
-            name: Yup.array()
-              .of(
-                Yup.object().shape({
-                  name: Yup.string().required(),
-                  id: Yup.number().required()
-                })
-              )
-              .required('Obrigatório'),
-            quantity: Yup.number()
-              .transform(value => (isNaN(value) ? undefined : value))
-              .integer('Necessário ser inteiro')
-              .min(1, 'Necessário ser maior ou igual a 1')
-              .required('Obrigatório'),
-            price: Yup.string()
-              .test('price', 'Necessário ter 2 casas decimais', value => {
-                const money = value || 0;
-
-                const teste = isCurrency(
-                  money.toString().replace(/R\$ /g, ''),
-                  {
-                    symbol: '$',
-                    require_symbol: false,
-                    allow_space_after_symbol: false,
-                    symbol_after_digits: false,
-                    allow_negatives: false,
-                    parens_for_negatives: false,
-                    negative_sign_before_digits: false,
-                    negative_sign_after_digits: false,
-                    allow_negative_sign_placeholder: false,
-                    thousands_separator: '.',
-                    decimal_separator: ',',
-                    allow_decimal: true,
-                    require_decimal: true,
-                    digits_after_decimal: [2],
-                    allow_space_after_digits: false
-                  }
-                );
-
-                return teste;
-              })
-              .test(
-                'moreThan',
-                'Necessário ser maior que 0',
-                value =>
-                  parseFloat(value.replace(/R\$ /g, '').replace(/,/g, '.')) > 0
-              )
-              .required('Obrigatório')
-          })
-        )
-        .required('Informe um produto')
-    }),
+  validationSchema: () => ValidationForm(),
   mapPropsToValues: ({ token = '', customer = [], products = [] }) => ({
     token: token || '',
     customer: customer || [],
@@ -95,25 +28,29 @@ const formikEnhancer = withFormik({
       })) || []
   }),
   handleSubmit: async (values, { props }) => {
-    const { token, customer, products } = values;
-    const customerFinal = customer.map(({ id, name }) => ({ id, name }));
-    const productsFinal = products.map(x => ({
-      ...x,
-      name: x.name[0].name,
-      quantity: Number(x.quantity)
-    }));
-    const profitability = profitabilityTypeWithArray(productsFinal);
-    const data = {
-      customer: customerFinal,
-      products: productsFinal,
-      profitability,
-      date: Date.now()
-    };
+    try {
+      const { token, customer, products } = values;
+      const customerFinal = customer.map(({ id, name }) => ({ id, name }));
+      const productsFinal = products.map(x => ({
+        ...x,
+        name: x.name[0].name,
+        quantity: Number(x.quantity)
+      }));
+      const profitability = profitabilityTypeWithArray(productsFinal);
+      const data = {
+        customer: customerFinal,
+        products: productsFinal,
+        profitability,
+        date: Date.now()
+      };
 
-    const id = await Put('orders', token, data);
-    await props.onSave({ ...data, token: id });
+      const id = await Put('orders', token, data);
+      await props.onSave({ ...data, token: id });
 
-    props.onClose();
+      props.onClose();
+    } catch (error) {
+      props.handleError(true);
+    }
   },
   displayName: 'Modal'
 });
@@ -122,6 +59,8 @@ const Modal = props => {
   const {
     title,
     onClose,
+    isError,
+    handleError,
     values,
     touched,
     errors,
@@ -157,6 +96,7 @@ const Modal = props => {
           }}
         />
         <Footer {...{ onClose, values, isSubmitting, isValid }} />
+        <Error isError={isError} onClose={handleError} />
       </div>
 
       <style jsx>
@@ -202,7 +142,7 @@ const Modal = props => {
             padding: 20px;
           }
 
-          @media (max-width: 1024px) {
+          @media (max-width: 768px) {
             .container {
               width: 100%;
             }
@@ -324,6 +264,64 @@ const Footer = memo(
   }
 );
 
+const Error = ({ isError, onClose }) => (
+  <>
+    {isError ? (
+      <div className="backdrop">
+        <div className="container">
+          <p>Algo deu errado, tente novamamente.</p>
+          <Button
+            type="submit"
+            text="Fechar"
+            fontColor={white}
+            backgroundColor={green}
+            onClick={() => onClose(false)}
+          />
+        </div>
+
+        <style jsx>
+          {`
+            .backdrop {
+              background-color: rgba(15, 43, 73, 0.35);
+              position: absolute;
+              height: 100%;
+              width: 100%;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+            }
+
+            .container {
+              background-color: ${white};
+              border-radius: 4px;
+              padding: 30px 20px;
+              height: 140px;
+              width: 290px;
+              display: flex;
+              flex-direction: column;
+              justify-content: space-between;
+              align-items: center;
+            }
+
+            p {
+              font-size: 17px;
+              font-weight: 500;
+              text-align: center;
+              margin: 0 0 20px;
+            }
+
+            @media (max-width: 768px) {
+              .container {
+                width: 80%;
+              }
+            }
+          `}
+        </style>
+      </div>
+    ) : null}
+  </>
+);
+
 const ModalForm = formikEnhancer(Modal);
 
 const EditOrderModal = ({
@@ -334,6 +332,12 @@ const EditOrderModal = ({
   onClose,
   onSave
 }) => {
+  const [isError, setError] = useState(false);
+
+  const handleError = value => {
+    setError(value);
+  };
+
   const escModal = event => {
     if (event.keyCode === 27) onClose();
   };
@@ -352,6 +356,8 @@ const EditOrderModal = ({
         title={title}
         customer={customer}
         products={products}
+        isError={isError}
+        handleError={handleError}
         onClose={onClose}
         onSave={onSave}
       />

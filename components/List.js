@@ -83,7 +83,7 @@ const Item = ({
   </>
 );
 
-const List = ({ data = [], isLoading, onSave }) => {
+const List = ({ data = [], isLoading, isError, onSave }) => {
   const [isOpen, setOpen] = useState(false);
   const [customer, setCustomer] = useState([]);
   const [products, setProducts] = useState([]);
@@ -127,7 +127,11 @@ const List = ({ data = [], isLoading, onSave }) => {
 
   return (
     <div>
-      {isLoading ? 'Carregando...' : 'Você não possui pedidos.'}
+      {isLoading
+        ? 'Carregando...'
+        : isError
+        ? 'Algo deu errado, tente novamamente.'
+        : 'Você não possui pedidos.'}
       <style jsx>
         {`
           div {
