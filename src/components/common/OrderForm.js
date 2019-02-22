@@ -1,4 +1,4 @@
-import { useRef, useLayoutEffect, memo } from 'react';
+import { memo } from 'react';
 
 import { FieldArray, FastField } from 'formik';
 
@@ -65,8 +65,6 @@ const FieldHide = index => (
 const Footer = memo(
   // eslint-disable-next-line no-unused-vars
   ({ onClose, values, isSubmitting, isValid }) => {
-    const modalRef = useRef();
-
     const quantityTotal = values.products.reduce(
       (sum, { quantity }) => sum + Number(quantity),
       0
@@ -83,13 +81,6 @@ const Footer = memo(
       .replace(/.([^.]*)$/, ',$1');
 
     const profitabilityType = profitabilityTypeWithArray(values.products);
-
-    useLayoutEffect(() => {
-      modalRef.current.focus();
-      return () => {
-        modalRef.current.blur();
-      };
-    }, []);
 
     return (
       <footer>
@@ -109,7 +100,7 @@ const Footer = memo(
           </div>
         </div>
         <div>
-          <Button text="Cancelar" refs={modalRef} onClick={onClose} />
+          <Button text="Cancelar" onClick={onClose} />
           <Button
             type="submit"
             text="Salvar"

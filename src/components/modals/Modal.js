@@ -1,37 +1,51 @@
+import { useRef, useLayoutEffect } from 'react';
+
 import Button from '../common/Button';
 
 import { white, gray, lightGray } from '../../styles/Colors';
 
-const Header = ({ title, onClose }) => (
-  <header>
-    <h3>{title}</h3>
-    <Button
-      text="X"
-      fontSize={13}
-      backgroundColor="transparent"
-      borderColor="transparent"
-      paddingHorizontal={10}
-      onClick={onClose}
-    />
+const Header = ({ title, onClose }) => {
+  const modalRef = useRef();
 
-    <style jsx>
-      {`
-        header {
-          padding: 20px 15px;
-          background-color: ${lightGray};
-          border: 1px solid ${gray};
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-        }
+  useLayoutEffect(() => {
+    modalRef.current.focus();
+    return () => {
+      modalRef.current.blur();
+    };
+  }, []);
 
-        h3 {
-          margin: 0;
-        }
-      `}
-    </style>
-  </header>
-);
+  return (
+    <header>
+      <h3>{title}</h3>
+      <Button
+        text="X"
+        fontSize={13}
+        backgroundColor="transparent"
+        borderColor="transparent"
+        paddingHorizontal={10}
+        refs={modalRef}
+        onClick={onClose}
+      />
+
+      <style jsx>
+        {`
+          header {
+            padding: 20px 15px;
+            background-color: ${lightGray};
+            border: 1px solid ${gray};
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+          }
+
+          h3 {
+            margin: 0;
+          }
+        `}
+      </style>
+    </header>
+  );
+};
 
 const Modal = ({ title, onClose, children }) => (
   <div className="backdrop">
