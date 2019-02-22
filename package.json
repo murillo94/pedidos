@@ -37,7 +37,7 @@
     "now-build": "next build ./src && next export ./src -o dist",
     "deploy": "now && now alias",
     "lint": "eslint .",
-    "init-firebase": "node -r dotenv/config -r esm scripts/firebase.js"
+    "init-firebase": "node -r dotenv/config -r esm src/scripts/firebase.js"
   },
   "husky": {
     "hooks": {
