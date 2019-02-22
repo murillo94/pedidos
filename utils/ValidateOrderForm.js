@@ -1,7 +1,7 @@
 import isCurrency from 'validator/lib/isCurrency';
 import * as Yup from 'yup';
 
-const ValidationForm = () =>
+const ValidateOrderForm = () =>
   Yup.object().shape({
     customer: Yup.array()
       .of(
@@ -69,4 +69,4 @@ const ValidationForm = () =>
       .required('Informe um produto')
   });
 
-export default ValidationForm;
+export default ValidateOrderForm;

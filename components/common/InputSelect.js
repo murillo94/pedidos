@@ -2,11 +2,11 @@ import { useState } from 'react';
 
 import Select from 'react-select';
 
-import { Error } from './Error';
+import { ErrorInput } from './Error';
 
-import { gray, white, black, darkGray, blue } from '../styles/Colors';
+import { gray, white, black, darkGray, blue } from '../../styles/Colors';
 
-import Get from '../services/Get';
+import Get from '../../services/Get';
 
 const InputSelect = ({
   field,
@@ -107,7 +107,7 @@ const InputSelect = ({
           })
         }}
       />
-      <Error name={name || field.name} />
+      <ErrorInput name={name || field.name} />
 
       <style jsx>
         {`

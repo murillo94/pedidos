@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 
-const EditOrderContext = React.createContext();
+const OrderFormContext = React.createContext();
 
-const EditOrderProvider = ({ children }) => {
+const OrderFormProvider = ({ children }) => {
   const [customersList, setCustomersList] = useState([]);
   const [productsList, setProductsList] = useState([]);
 
   return (
-    <EditOrderContext.Provider
+    <OrderFormContext.Provider
       value={{
         customersList,
         productsList,
@@ -20,11 +20,11 @@ const EditOrderProvider = ({ children }) => {
       }}
     >
       {children}
-    </EditOrderContext.Provider>
+    </OrderFormContext.Provider>
   );
 };
 
-const EditOrderConsumer = EditOrderContext.Consumer;
+const OrderFormConsumer = OrderFormContext.Consumer;
 
-export default EditOrderProvider;
-export { EditOrderConsumer };
+export default OrderFormProvider;
+export { OrderFormConsumer };

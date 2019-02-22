@@ -1,6 +1,6 @@
 import Head from 'next/head';
 
-import { lightGray, black, blue, gray, darkGray } from '../styles/Colors';
+import { lightGray, black, blue, gray, darkGray } from '../../styles/Colors';
 
 const Meta = () => (
   <>

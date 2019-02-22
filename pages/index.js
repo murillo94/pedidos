@@ -2,10 +2,10 @@ import { useState, useEffect } from 'react';
 
 import Page from '../layouts/Page';
 
-import EditOrderProvider from '../contexts/EditOrder';
+import OrderFormProvider from '../components/contexts/OrderForm';
 
-import Header from '../components/Header';
-import List from '../components/List';
+import Header from '../components/common/Header';
+import OrderRowList from '../components/rows/OrderRowList';
 
 import Get from '../services/Get';
 
@@ -34,21 +34,21 @@ const Order = () => {
   }, []);
 
   return (
-    <EditOrderProvider>
+    <OrderFormProvider>
       <Page>
         <Header
           title="Pedidos"
           subTitle={`${data.length} pedidos no total`}
           onSave={onSave}
         />
-        <List
+        <OrderRowList
           data={data}
           isLoading={isLoading}
           isError={isError}
           onSave={onSave}
         />
       </Page>
-    </EditOrderProvider>
+    </OrderFormProvider>
   );
 };
 

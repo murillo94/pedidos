@@ -1,4 +1,4 @@
-import { white, gray } from '../styles/Colors';
+import { white, gray } from '../../styles/Colors';
 
 const Button = ({
   type = 'button',
@@ -9,6 +9,8 @@ const Button = ({
   backgroundColor = white,
   borderColor = gray,
   marginLeft = 0,
+  paddingVertical = 10,
+  paddingHorizontal = 20,
   onClick,
   refs = null
 }) => (
@@ -27,7 +29,7 @@ const Button = ({
           border: 1px solid ${borderColor};
           box-shadow: none;
           border-radius: 4px;
-          padding: 10px 20px;
+          padding: ${paddingVertical}px ${paddingHorizontal}px;
           margin-left: ${marginLeft}px;
           cursor: pointer;
         }

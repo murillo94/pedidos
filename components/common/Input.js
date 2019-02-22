@@ -1,6 +1,6 @@
 import NumberFormat from 'react-number-format';
 
-import { ErrorContainer, Error } from './Error';
+import { ErrorInputContainer, ErrorInput } from './Error';
 
 const Input = ({
   field,
@@ -33,19 +33,20 @@ const Input = ({
           form.errors.products[keyExtractor] &&
           form.errors.products[keyExtractor].profitability &&
           !form.errors.products[keyExtractor].price ? (
-            <ErrorContainer message="Rentabilidade ruim" />
+            <ErrorInputContainer message="Rentabilidade ruim" />
           ) : null}
         </>
       ) : (
         <input
           {...field}
+          {...props}
           type={type}
           placeholder={placeholder}
           autoComplete="off"
         />
       )}
 
-      <Error name={field.name} />
+      <ErrorInput name={field.name} />
 
       <style jsx>
         {`

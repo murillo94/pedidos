@@ -1,6 +1,6 @@
-import { profitabilityOptions } from '../utils/Profitability';
+import { profitabilityOptions } from '../../utils/Profitability';
 
-const Profitability = ({ value = 'high', message = '$', ...props }) => (
+const Profitability = ({ value = 'medium', message = '$', ...props }) => (
   <>
     <span {...props}>{message}</span>
 

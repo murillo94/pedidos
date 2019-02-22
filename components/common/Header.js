@@ -1,9 +1,9 @@
 import { useState } from 'react';
 
 import Button from './Button';
-import EditOrderModal from './EditOrderModal';
+import OrderFormModal from '../modals/OrderFormModal';
 
-import { darkGray } from '../styles/Colors';
+import { darkGray } from '../../styles/Colors';
 
 const Header = ({ title, subTitle, onSave }) => {
   const [isOpen, setOpen] = useState(false);
@@ -23,7 +23,7 @@ const Header = ({ title, subTitle, onSave }) => {
       </div>
 
       {isOpen && (
-        <EditOrderModal
+        <OrderFormModal
           title="Adicionar pedido"
           onClose={handleModal}
           onSave={onSave}
