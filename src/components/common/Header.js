@@ -1,11 +1,11 @@
-import { useState } from 'react';
+import { useState, memo } from 'react';
 
 import Button from './Button';
 import OrderFormModal from '../modals/OrderFormModal';
 
 import { darkGray } from '../../styles/Colors';
 
-const Header = ({ title, subTitle, onSave }) => {
+const Header = memo(({ title, subTitle, onSave }) => {
   const [isOpen, setOpen] = useState(false);
 
   const handleModal = () => {
@@ -53,6 +53,6 @@ const Header = ({ title, subTitle, onSave }) => {
       </style>
     </header>
   );
-};
+});
 
 export default Header;

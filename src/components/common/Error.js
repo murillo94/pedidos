@@ -1,10 +1,12 @@
+import { memo } from 'react';
+
 import { ErrorMessage } from 'formik';
 
 import Button from './Button';
 
 import { red, white, green } from '../../styles/Colors';
 
-export const ErrorInputContainer = ({ message }) => (
+export const ErrorInputContainer = memo(({ message }) => (
   <div>
     {message}
 
@@ -18,16 +20,16 @@ export const ErrorInputContainer = ({ message }) => (
       `}
     </style>
   </div>
-);
+));
 
-export const ErrorInput = ({ name }) => (
+export const ErrorInput = memo(({ name }) => (
   <ErrorMessage
     name={name}
     render={message => <ErrorInputContainer message={message} />}
   />
-);
+));
 
-export const ErrorModal = ({ isError, onClose }) => (
+export const ErrorModal = memo(({ isError, onClose }) => (
   <>
     {isError ? (
       <div className="backdrop">
@@ -83,4 +85,4 @@ export const ErrorModal = ({ isError, onClose }) => (
       </div>
     ) : null}
   </>
-);
+));

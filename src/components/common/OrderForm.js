@@ -1,4 +1,4 @@
-import { memo } from 'react';
+import { memo, useMemo } from 'react';
 
 import { FieldArray, FastField } from 'formik';
 
@@ -54,33 +54,48 @@ const handleAddItem = push => {
   });
 };
 
-const FieldHide = index => (
+const FieldHide = memo(index => (
   <>
     <FastField type="hidden" name={`products[${index}].id`} />
     <FastField type="hidden" name={`products[${index}].multiple`} />
     <FastField type="hidden" name={`products[${index}].priceFixed`} />
   </>
-);
+));
 
 const Footer = memo(
   // eslint-disable-next-line no-unused-vars
   ({ onClose, values, isSubmitting, isValid }) => {
-    const quantityTotal = values.products.reduce(
-      (sum, { quantity }) => sum + Number(quantity),
-      0
+    const quantityTotal = useMemo(
+      () =>
+        values.products.reduce(
+          (sum, { quantity }) => sum + Number(quantity),
+          0
+        ),
+      [values.products]
     );
 
-    const priceTotal = values.products.reduce(
-      (sum, { price }) => sum + Number(price.replace(/[^\d]/g, '')),
-      0
+    const priceTotal = useMemo(
+      () =>
+        values.products.reduce(
+          (sum, { price }) => sum + Number(price.replace(/[^\d]/g, '')),
+          0
+        ),
+      [values.products]
     );
 
-    const formatPriceTotal = Dinero({ amount: priceTotal })
-      .toFormat('0,0.00')
-      .replace(/,/g, '.')
-      .replace(/.([^.]*)$/, ',$1');
+    const formatPriceTotal = useMemo(
+      () =>
+        Dinero({ amount: priceTotal })
+          .toFormat('0,0.00')
+          .replace(/,/g, '.')
+          .replace(/.([^.]*)$/, ',$1'),
+      [priceTotal]
+    );
 
-    const profitabilityType = profitabilityTypeWithArray(values.products);
+    const profitabilityType = useMemo(
+      () => profitabilityTypeWithArray(values.products),
+      [values.products]
+    );
 
     return (
       <footer>

@@ -1,6 +1,8 @@
+import { memo } from 'react';
+
 import { profitabilityOptions } from '../../utils/Profitability';
 
-const Profitability = ({ value = 'medium', message = '$', ...props }) => (
+const Profitability = memo(({ value = 'medium', message = '$', ...props }) => (
   <>
     <span {...props}>{message}</span>
 
@@ -17,6 +19,6 @@ const Profitability = ({ value = 'medium', message = '$', ...props }) => (
       `}
     </style>
   </>
-);
+));
 
 export default Profitability;
