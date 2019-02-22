@@ -71,7 +71,7 @@ const InputSelect = memo(
           inputId="select-id"
           placeholder={placeholder}
           value={value}
-          options={data}
+          options={data.length ? data : options}
           isLoading={isLoading}
           getOptionLabel={res => res.name}
           getOptionValue={res => res.id}
