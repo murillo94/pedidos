@@ -1638,6 +1638,11 @@ babel-plugin-jest-hoist@^24.1.0:
   resolved "https://registry.yarnpkg.com/babel-plugin-jest-hoist/-/babel-plugin-jest-hoist-24.1.0.tgz#dfecc491fb15e2668abbd690a697a8fd1411a7f8"
   integrity sha512-gljYrZz8w1b6fJzKcsfKsipSru2DU2DmQ39aB6nV3xQ0DDv3zpIzKGortA5gknrhNnPN8DweaEgrnZdmbGmhnw==
 
+babel-plugin-jsx-remove-data-test-id@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/babel-plugin-jsx-remove-data-test-id/-/babel-plugin-jsx-remove-data-test-id-2.0.0.tgz#18d324954f0d4b63292fd9ed870d7a09b80c9ecc"
+  integrity sha512-Hjwd5KnKtUlv9WgS9wMYIfd8G16hBLfi3Nq2axLkRt754sj5mRYlZ5WJzbXE3967NDjjDIx0PrHhwQHukBs0Dw==
+
 babel-plugin-macros@^2.0.0:
   version "2.5.0"
   resolved "https://registry.yarnpkg.com/babel-plugin-macros/-/babel-plugin-macros-2.5.0.tgz#01f4d3b50ed567a67b80a30b9da066e94f4097b6"
