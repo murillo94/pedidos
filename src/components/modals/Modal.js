@@ -48,7 +48,7 @@ const Header = ({ title, onClose }) => {
 };
 
 const Modal = ({ title, onClose, children }) => (
-  <div className="backdrop">
+  <div className="backdrop" data-testid="modal">
     <div className="container">
       <Header title={title} onClose={onClose} />
       {children}

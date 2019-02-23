@@ -14,13 +14,12 @@ const OrderRow = ({
   handleEdit
 }) => (
   <>
-    <div
-      className="item"
-      style={{ borderColor: profitabilityOptions.border[profitability] }}
-    >
+    <div className="item">
       <div className="info">
         <div>
-          <div className="title">{customer[0].name}</div>
+          <div className="title" data-testid="order-row-name">
+            {customer.length ? customer[0].name : ''}
+          </div>
           <div className="sub-title">
             {total !== 1 ? `${total} produtos` : `${total} produto`}
           </div>
@@ -46,6 +45,7 @@ const OrderRow = ({
           background-color: ${white};
           border-top-width: 3px;
           border-top-style: solid;
+          border-color: ${profitabilityOptions.border[profitability]};
           border-radius: 4px;
           box-shadow: 0px 2px 3px 0px rgba(0, 0, 0, 0.05);
           padding: 20px;

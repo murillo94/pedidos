@@ -1,4 +1,4 @@
-import { render } from 'react-testing-library';
+import { render, fireEvent } from 'react-testing-library';
 
 import Input from '../common/Input';
 
@@ -57,4 +57,22 @@ test('Componente deverá ser do tipo money e exibir erro', () => {
   expect(getByTestId('error-input-container')).toHaveTextContent(
     'Rentabilidade ruim'
   );
+});
+
+test('Componente deverá ter uma valor e depois um outro valor', () => {
+  const { getByTestId } = render(<Input className="input" />);
+  const input = getByTestId('input');
+
+  expect(input.value).toBe('');
+  fireEvent.change(input, { target: { value: '2' } });
+  expect(input.value).toBe('2');
+});
+
+test('Componente deverá ser do tipo money e ter uma valor e depois um outro valor', () => {
+  const { getByTestId } = render(<Input className="input" isMoney />);
+  const input = getByTestId('input');
+
+  expect(input.value).toBe('');
+  fireEvent.change(input, { target: { value: '10' } });
+  expect(input.value).toBe('R$ 10');
 });
