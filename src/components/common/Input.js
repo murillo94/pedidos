@@ -6,13 +6,13 @@ import { ErrorInputContainer, ErrorInput } from './Error';
 
 const Input = memo(
   ({
-    field,
+    field = {},
     type = 'text',
     placeholder,
     width,
     keyExtractor,
     isMoney,
-    form,
+    form = {},
     ...props
   }) => {
     return (
@@ -30,6 +30,7 @@ const Input = memo(
               decimalScale={2}
               allowNegative={false}
               autoComplete="off"
+              data-testid="input"
             />
             {form.errors &&
             form.errors.products &&
@@ -46,6 +47,7 @@ const Input = memo(
             type={type}
             placeholder={placeholder}
             autoComplete="off"
+            data-testid="input"
           />
         )}
 

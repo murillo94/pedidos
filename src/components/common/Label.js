@@ -2,7 +2,9 @@
 
 const Label = ({ text, id, children }) => (
   <div>
-    <label htmlFor={id}>{text}</label>
+    <label htmlFor={id} data-testid="label">
+      {text}
+    </label>
     {children}
 
     <style jsx>

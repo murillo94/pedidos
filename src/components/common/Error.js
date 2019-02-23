@@ -7,7 +7,7 @@ import Button from './Button';
 import { red, white, green } from '../../styles/Colors';
 
 export const ErrorInputContainer = memo(({ message }) => (
-  <div>
+  <div data-testid="error-input-container">
     {message}
 
     <style jsx>
@@ -32,7 +32,7 @@ export const ErrorInput = memo(({ name }) => (
 export const ErrorModal = memo(({ isError, onClose }) => (
   <>
     {isError ? (
-      <div className="backdrop">
+      <div className="backdrop" data-testid="error-modal">
         <div className="container">
           <p>Algo deu errado, tente novamamente.</p>
           <Button

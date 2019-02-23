@@ -18,7 +18,13 @@ const Button = memo(
     refs = null
   }) => (
     <>
-      <button type={type} disabled={disabled} onClick={onClick} ref={refs}>
+      <button
+        type={type}
+        disabled={disabled}
+        onClick={onClick}
+        ref={refs}
+        data-testid="button"
+      >
         {text}
       </button>
 

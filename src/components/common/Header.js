@@ -13,7 +13,7 @@ const Header = memo(({ title, subTitle, onSave }) => {
   };
 
   return (
-    <header>
+    <header data-testid="header">
       <div>
         <h1>{title}</h1>
         <h2>{subTitle}</h2>
