@@ -74,8 +74,12 @@
       "@babel/preset-react",
       "next/babel"
     ],
-    "plugins": [
-      "babel-plugin-jsx-remove-data-test-id"
-    ]
+    "env": {
+      "production": {
+        "plugins": [
+          "babel-plugin-jsx-remove-data-test-id"
+        ]
+      }
+    }
   }
 }
