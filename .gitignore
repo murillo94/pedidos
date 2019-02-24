@@ -14,3 +14,6 @@ yarn-error.log*
 
 # dotenv environment variables file
 .env
+
+# covarage code
+coverage
