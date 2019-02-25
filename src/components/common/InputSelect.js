@@ -15,7 +15,7 @@ const InputSelect = memo(
     keyExtractor,
     placeholder,
     collection,
-    options,
+    options = [],
     value,
     onChange,
     onBlur,
