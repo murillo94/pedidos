@@ -8,3 +8,6 @@ README.md
 node_modules
 dist
 scripts
+coverage
+jest.*
+__tests__
