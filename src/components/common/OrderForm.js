@@ -33,7 +33,7 @@ const onChangeQuantity = (form, index, { target: { value } }) => {
 };
 
 const onChangePrice = (form, index, { target: { value } }) => {
-  form.setFieldValue(`products[${index}].price`, value);
+  console.log(form);
   form.setFieldValue(
     `products[${index}].profitability`,
     profitabilityTypeWithNumber(
@@ -41,6 +41,7 @@ const onChangePrice = (form, index, { target: { value } }) => {
       value
     )
   );
+  form.setFieldValue(`products[${index}].price`, value);
 };
 
 const handleAddItem = push => {
@@ -257,6 +258,9 @@ const OrderForm = ({
                             placeholder="Preço Unit."
                             width="25%"
                             isMoney
+                            profitability={
+                              form.values.products[index].profitability
+                            }
                             onChange={e => onChangePrice(form, index, e)}
                             component={Input}
                           />

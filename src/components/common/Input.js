@@ -12,7 +12,7 @@ const Input = memo(
     width,
     keyExtractor,
     isMoney,
-    form = {},
+    profitability,
     ...props
   }) => {
     return (
@@ -32,11 +32,7 @@ const Input = memo(
               autoComplete="off"
               data-testid="input"
             />
-            {form.errors &&
-            form.errors.products &&
-            form.errors.products[keyExtractor] &&
-            form.errors.products[keyExtractor].profitability &&
-            !form.errors.products[keyExtractor].price ? (
+            {profitability === 'low' ? (
               <ErrorInputContainer message="Rentabilidade ruim" />
             ) : null}
           </>
