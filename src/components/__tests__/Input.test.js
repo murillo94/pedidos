@@ -33,16 +33,6 @@ test('Componente deverá ter valor com formatação', () => {
 });
 
 test('Componente deverá ser do tipo money e exibir erro', () => {
-  const form = {
-    errors: {
-      products: [
-        {
-          profitability: 'low'
-        }
-      ]
-    }
-  };
-
   const { getByTestId } = render(
     <Input
       className="input"
@@ -50,7 +40,7 @@ test('Componente deverá ser do tipo money e exibir erro', () => {
       value="123"
       isMoney
       keyExtractor={0}
-      {...{ form }}
+      profitability="low"
     />
   );
 
