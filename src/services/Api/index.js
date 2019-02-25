@@ -6,7 +6,6 @@ const initFirebase = () => {
   try {
     firebase.initializeApp(configFirebase);
   } catch (error) {
-    console.log(error);
     if (!/already exists/.test(error.message)) {
       console.log(`Firebase didn't initialize correctly: ${error.message}`);
     }
