@@ -1,4 +1,4 @@
-# Teste Mercos (full stack)
+# Pedidos
 
 Uma aplicação que adiciona pedidos e ​altera os pedidos existentes.
 
