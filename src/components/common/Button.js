@@ -14,6 +14,7 @@ const Button = memo(
     marginLeft = 0,
     paddingVertical = 10,
     paddingHorizontal = 20,
+    isEdit = false,
     onClick,
     refs = null
   }) => (
@@ -46,6 +47,12 @@ const Button = memo(
           button:disabled {
             cursor: not-allowed;
             opacity: 0.6;
+          }
+
+          @media (max-width: 600px) {
+            button {
+              ${isEdit && 'margin: 15px -10px 0; padding: 10px'};
+            }
           }
         `}
       </style>

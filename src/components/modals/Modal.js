@@ -85,6 +85,7 @@ const Modal = ({ title, onClose, children }) => (
 
         @media (max-width: 768px) {
           .container {
+            height: 100%;
             width: 100%;
           }
         }
