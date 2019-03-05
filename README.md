@@ -1,6 +1,6 @@
 # Pedidos
 
-Uma aplicação que adiciona e ​altera os pedidos.
+Uma aplicação que adiciona e ​altera pedidos.
 
 ## Tecnologias
 
